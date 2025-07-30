@@ -1,0 +1,37 @@
+# ===============================
+#  theUltimateSMPLib - Config
+# ===============================
+
+# SQL database configuration
+sql:
+  useSql: true
+  host: "localhost"            # The IP address or domain of your SQL server
+  port: 3306                   # The port your SQL server uses (default is 3306)
+  database: "testdatabase"        # The name of the database to connect to
+  user: "root"                 # The username for SQL authentication
+  password: "password"         # The password for SQL authentication
+  # Table names (these will be created automatically if they don't exist)
+  tables:
+    player_data: "playerdata"   # Table for storing player-specific data from code (UUID, stats, etc.)
+    global_data: "globaldata"   # Table for storing global data
+
+# File paths (for backups, logs, or external storage)
+paths:
+  player_data_backup: "plugins/theUltimateSMPLib/data/player_data.yml"   # File path to backup player data
+  global_data_backup: "plugins/theUltimateSMPLib/data/global_data.yml"   # File path to backup global data
+
+# Texture pack settings
+texture_pack:
+  enabled: false
+  prompt: "§6Please accept the custom resource pack to play on the server."
+
+  # Texture packs to enforce to players
+  # Key = SHA-1 hash (40 characters), Values = HTTPS direct download URL and whether its enabled or not
+  # All packs listed here will be sent to all joining players
+  packs:
+    "5e4b7a5efc4a6d3c20b31d722f7e29e1a1c6718d":
+      url: "https://example.com/pack1.zip"
+      enabled: false
+    "d1c56fdc65cf1cb6400e6be3c4d57448e8a2b2e2":
+      url: "https://example.com/pack2.zip"
+      enabled: false

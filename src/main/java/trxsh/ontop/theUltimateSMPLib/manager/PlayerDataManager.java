@@ -1,6 +1,8 @@
 package trxsh.ontop.theUltimateSMPLib.manager;
 
 import org.bukkit.Bukkit;
+import trxsh.ontop.theUltimateSMPLib.Main;
+import trxsh.ontop.theUltimateSMPLib.config.ConfigManager;
 import trxsh.ontop.theUltimateSMPLib.data.PlayerData;
 import trxsh.ontop.theUltimateSMPLib.sql.SQL;
 import trxsh.ontop.theUltimateSMPLib.util.YamlUtil;
@@ -25,9 +27,16 @@ public class PlayerDataManager {
         return dataMap.get(uuid);
     }
 
+    public static Map<UUID, PlayerData> getDataMap() {
+        return dataMap;
+    }
+
     public static void loadFromSQL() throws SQLException {
+        ConfigManager manager = Main.getInstance().getConfigManager();
+        String playerDataTable = manager.getPlayerDataTable();
+
         dataMap.clear();
-        CachedRowSet rws = SQL.select("playerData", "*", null);
+        CachedRowSet rws = SQL.select(playerDataTable, "*", null);
 
         if(rws == null)
             throw new SQLException("player data has either no entries or the table does not exist");
@@ -48,7 +57,10 @@ public class PlayerDataManager {
         Bukkit.getLogger().info("Loaded " + dataMap.size() + " player data entries from SQL.");
     }
 
-    public static void loadFromDisk(String path) throws IOException {
+    public static void loadFromDisk() throws IOException {
+        ConfigManager manager = Main.getInstance().getConfigManager();
+        String path = manager.getPlayerDataBackupPath();
+
         dataMap.clear();
 
         File playerDataFolder = new File(path);

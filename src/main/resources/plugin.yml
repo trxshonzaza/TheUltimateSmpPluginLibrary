@@ -1,0 +1,10 @@
+name: TheUltimateSMPPluginLibrary
+author: trxsh
+version: '1.0-SNAPSHOT'
+main: trxsh.ontop.theUltimateSMPLib.Main
+api-version: '1.21.5'
+description: The Ultimate SMP Plugin Library!
+website: https://github.com/trxshonzaza
+commands:
+  save:
+    description: save command

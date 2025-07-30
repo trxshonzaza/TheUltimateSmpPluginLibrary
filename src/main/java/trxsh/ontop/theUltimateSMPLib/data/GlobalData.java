@@ -5,6 +5,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import trxsh.ontop.theUltimateSMPLib.Main;
+import trxsh.ontop.theUltimateSMPLib.config.ConfigManager;
 import trxsh.ontop.theUltimateSMPLib.item.CustomItemStack;
 import trxsh.ontop.theUltimateSMPLib.sql.SQL;
 import trxsh.ontop.theUltimateSMPLib.util.YamlUtil;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class GlobalData {
+
     private Map<String, Object> dataList = new HashMap<>();
     private static GlobalData instance = null;
 
@@ -42,10 +44,6 @@ public class GlobalData {
         return null;
     }
 
-    public Map<String, Object> getData() {
-        return dataList;
-    }
-
     public void setDataList(Map<String, Object> data) {
         this.dataList = data;
     }
@@ -59,18 +57,24 @@ public class GlobalData {
     }
 
     public void saveToSql() {
+        ConfigManager manager = Main.getInstance().getConfigManager();
+        String globalDataTable = manager.getGlobalDataTable();
+
         String yaml = YamlUtil.objectToYaml(this);
 
-        if(SQL.rowExists("globalData", null)) {
-            SQL.update("globalData", null, Map.of(
+        if(SQL.rowExists(globalDataTable, null)) {
+            SQL.update(globalDataTable, null, Map.of(
                     "yaml", yaml
             ));
         } else {
-            SQL.insert("globalData", yaml);
+            SQL.insert(globalDataTable, yaml);
         }
     }
 
-    public void saveToDisk(String path) {
+    public void saveToDisk() {
+        ConfigManager manager = Main.getInstance().getConfigManager();
+        String path = manager.getGlobalDataBackupPath();
+
         File playerDataFolder = new File(path);
         if(!playerDataFolder.exists()) playerDataFolder.mkdirs();
 
@@ -82,8 +86,11 @@ public class GlobalData {
     }
 
     public void loadFromSQL() throws SQLException {
+        ConfigManager manager = Main.getInstance().getConfigManager();
+        String globalDataTable = manager.getGlobalDataTable();
+
         dataList.clear();
-        CachedRowSet rws = SQL.select("globalData", "*", null);
+        CachedRowSet rws = SQL.select(globalDataTable, "*", null);
 
         if(rws == null)
             throw new SQLException("global data has either no entries or the table does not exist");
@@ -102,14 +109,17 @@ public class GlobalData {
         Bukkit.getLogger().info("Loaded global data from SQL.");
     }
 
-    public void loadFromDisk(String path) throws IOException {
+    public void loadFromDisk() throws IOException {
+        ConfigManager manager = Main.getInstance().getConfigManager();
+        String path = manager.getGlobalDataBackupPath();
+
         dataList.clear();
 
         File globalDataFolder = new File(path);
         if(!globalDataFolder.exists()) throw new IOException("path does not exist");
 
         File file = new File(path + "/globaldata.yml");
-        if(!file.exists()) throw new IOException("no global data yml in the specified directory. the global data file must end in '.yml'");
+        if(!file.exists()) throw new IOException("no global data yml in the specified directory. the global data file must end in '.yml' path:" + path);
 
         try(FileInputStream fs = new FileInputStream(file)) {
             String yaml = new String(fs.readAllBytes());

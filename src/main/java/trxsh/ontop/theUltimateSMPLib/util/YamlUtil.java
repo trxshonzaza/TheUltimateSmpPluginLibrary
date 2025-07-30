@@ -21,12 +21,12 @@ public class YamlUtil {
         return yaml.dump(data);
     }
 
-    // this methoda is dangerous. it may allow for remote code execution as it allows every class to be instantiated. load YAML at your own risk.
+    // this method is dangerous. it may allow for remote code execution as it allows every class to be instantiated. load YAML at your own risk.
     public static <T> T yamlToObject(String yamlString, Class<T> clazz) {
         try {
             LoaderOptions options = new LoaderOptions();
 
-            options.setTagInspector(tag -> true);
+            options.setTagInspector(tag -> true); // this line right here is the dangerous one!
 
             Yaml yaml = new Yaml(new Constructor(clazz, options));
             return yaml.load(yamlString);

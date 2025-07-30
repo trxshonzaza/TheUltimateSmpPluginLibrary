@@ -3,6 +3,7 @@ package trxsh.ontop.theUltimateSMPLib.data;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import trxsh.ontop.theUltimateSMPLib.Main;
 import trxsh.ontop.theUltimateSMPLib.sql.SQL;
 import trxsh.ontop.theUltimateSMPLib.util.YamlUtil;
 
@@ -81,7 +82,9 @@ public class PlayerData {
         }
     }
 
-    public void saveToDisk(String path) {
+    public void saveToDisk() {
+        String path = Main.getInstance().getConfigManager().getPlayerDataBackupPath();
+
         File playerDataFolder = new File(path);
         if(!playerDataFolder.exists()) playerDataFolder.mkdirs();
 

@@ -13,7 +13,7 @@ public class SQL {
     private static HikariDataSource source;
     private static boolean initialized = false;
     
-    public static void Initialize(String url, String username, String password, String database) throws ClassNotFoundException, SQLException {
+    public static void Initialize(String url, int port, String username, String password, String database) throws ClassNotFoundException, SQLException {
         SQL.url = url;
         SQL.username = username;
         SQL.password = password;
@@ -24,7 +24,7 @@ public class SQL {
         source.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
 
         source.addDataSourceProperty("serverName", url);
-        source.addDataSourceProperty("port", 3306);
+        source.addDataSourceProperty("port", port);
         source.addDataSourceProperty("databaseName", database);
         source.addDataSourceProperty("user", username);
         source.addDataSourceProperty("password", password);

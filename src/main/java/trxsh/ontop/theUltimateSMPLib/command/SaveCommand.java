@@ -23,7 +23,7 @@ public class SaveCommand implements CommandExecutor {
                 data.add("ListTest", List.of("one", "two", "three"));
                 data.add("MapTest", Map.of("nestedKey", "nestedValue"));*/
 
-                data.saveToDisk(Main.getInstance().getDataFolder().getAbsolutePath() + "/playerdata");
+                //data.saveToDisk();
                 player.sendMessage("saved.");
             } else {
                 player.sendMessage("data is null.");

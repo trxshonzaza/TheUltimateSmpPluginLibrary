@@ -23,5 +23,6 @@ public class Loops {
 
     public static void endLoop(String key) {
         loops.get(key).cancel();
+        loops.remove(key);
     }
 }
