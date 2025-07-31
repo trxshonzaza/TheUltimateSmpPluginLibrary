@@ -1,6 +1,7 @@
 package trxsh.ontop.theUltimateSMPLib.manager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import trxsh.ontop.theUltimateSMPLib.Main;
 import trxsh.ontop.theUltimateSMPLib.config.ConfigManager;
 import trxsh.ontop.theUltimateSMPLib.data.PlayerData;
@@ -17,10 +18,11 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PlayerDataManager {
-    private static Map<UUID, PlayerData> dataMap = new HashMap<>();
+    private static final Map<UUID, PlayerData> dataMap = new HashMap<>();
 
-    public static void add(PlayerData data) {
+    public static PlayerData add(PlayerData data) {
         dataMap.put(data.getUuid(), data);
+        return data;
     }
 
     public static PlayerData get(UUID uuid) {
@@ -32,7 +34,7 @@ public class PlayerDataManager {
     }
 
     public static void loadFromSQL() throws SQLException {
-        ConfigManager manager = Main.getInstance().getConfigManager();
+        ConfigManager manager = new ConfigManager(Main.getInstance());
         String playerDataTable = manager.getPlayerDataTable();
 
         dataMap.clear();
@@ -58,7 +60,7 @@ public class PlayerDataManager {
     }
 
     public static void loadFromDisk() throws IOException {
-        ConfigManager manager = Main.getInstance().getConfigManager();
+        ConfigManager manager = new ConfigManager(Main.getInstance());
         String path = manager.getPlayerDataBackupPath();
 
         dataMap.clear();

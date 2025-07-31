@@ -45,6 +45,9 @@ public class SQL {
 
     public static void createTable(String tableName, Map<String, String> args) {
         try(Connection con = getConnection()) {
+            if(!initialized)
+                throw new SQLException("SQL is not initialized. (initialized boolean is false or Initialize not called)");
+
             StringBuilder sb = new StringBuilder();
 
             sb.append("CREATE TABLE ");
@@ -79,6 +82,9 @@ public class SQL {
         CachedRowSet rws = null;
 
         try(Connection con = getConnection()) {
+            if(!initialized)
+                throw new SQLException("SQL is not initialized. (initialized boolean is false or Initialize not called)");
+
             StringBuilder sb = new StringBuilder();
 
             sb.append("SELECT ");
@@ -109,6 +115,9 @@ public class SQL {
 
     public static int insert(String tableName, Object... args) {
         try(Connection con = getConnection()) {
+            if(!initialized)
+                throw new SQLException("SQL is not initialized. (initialized boolean is false or Initialize not called)");
+
             StringBuilder sb = new StringBuilder();
 
             sb.append("INSERT INTO ");
@@ -145,6 +154,9 @@ public class SQL {
 
     public static void update(String tableName, String conditon, Map<String, Object> args) {
         try(Connection con = getConnection()) {
+            if(!initialized)
+                throw new SQLException("SQL is not initialized. (initialized boolean is false or Initialize not called)");
+
             StringBuilder sb = new StringBuilder();
 
             sb.append("UPDATE ");
@@ -188,6 +200,9 @@ public class SQL {
 
     public static int executeCustomUpdate(String sql, Object... args) {
         try(Connection con = getConnection()) {
+            if(!initialized)
+                throw new SQLException("SQL is not initialized. (initialized boolean is false or Initialize not called)");
+
             try (PreparedStatement ps = con.prepareStatement(sql)) {
 
                 for (int i = 0; i < args.length; i++) {
@@ -197,7 +212,7 @@ public class SQL {
                 return ps.executeUpdate();
             }
         } catch (SQLException e) {
-            Bukkit.getLogger().info("could not execute custom query: " + e.getMessage());
+            Bukkit.getLogger().info("could not execute custom update: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -208,6 +223,9 @@ public class SQL {
         CachedRowSet rws = null;
 
         try(Connection con = getConnection()) {
+            if(!initialized)
+                throw new SQLException("SQL is not initialized. (initialized boolean is false or Initialize not called)");
+
             try(PreparedStatement ps = con.prepareStatement(sql)) {
 
                 for(int i = 0; i < args.length; i++) {
@@ -249,7 +267,6 @@ public class SQL {
         return "'" + in + "'";
     }
 
-    public static boolean isInitialized() { return initialized; }
     public static boolean isValid() throws SQLException {
         Connection con = getConnection();
 

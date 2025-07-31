@@ -97,4 +97,15 @@ public class ConfigManager {
         }
         return enabledPacks;
     }
+
+    // ==== MESSENGER ====
+
+    public String getMessengerPrefix() {
+        String prefix = config.getString("messenger.prefix", "");
+
+        if(!prefix.isEmpty())
+            prefix = prefix + " ";
+
+        return prefix;
+    }
 }

@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import trxsh.ontop.theUltimateSMPLib.command.ItemRegistryCommand;
 import trxsh.ontop.theUltimateSMPLib.command.SaveCommand;
 import trxsh.ontop.theUltimateSMPLib.config.ConfigManager;
 import trxsh.ontop.theUltimateSMPLib.data.GlobalData;
@@ -43,6 +44,7 @@ public final class Main extends JavaPlugin {
 
         //commands
         getCommand("save").setExecutor(new SaveCommand());
+        getCommand("items").setExecutor(new ItemRegistryCommand());
 
         //events
         getPluginManager().registerEvents(new Join(), this);

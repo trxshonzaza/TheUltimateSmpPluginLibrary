@@ -3,16 +3,21 @@ package trxsh.ontop.theUltimateSMPLib.event;
 import net.kyori.adventure.resource.ResourcePackInfo;
 import net.kyori.adventure.resource.ResourcePackInfoLike;
 import net.kyori.adventure.resource.ResourcePackRequest;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import trxsh.ontop.theUltimateSMPLib.manager.PlayerDataManager;
 import trxsh.ontop.theUltimateSMPLib.data.PlayerData;
+import trxsh.ontop.theUltimateSMPLib.other.Messenger;
+import trxsh.ontop.theUltimateSMPLib.other.Text;
 import trxsh.ontop.theUltimateSMPLib.other.TexturePackEnforcer;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +27,24 @@ public class Join implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        PlayerData data = PlayerDataManager.get(player.getUniqueId());
 
-        if(PlayerDataManager.get(player.getUniqueId()) == null) {
-            PlayerDataManager.add(PlayerData.Create(player));
+        if(data == null) {
+            data = PlayerDataManager.add(PlayerData.Create(player));
         }
+
+        data.addOrReplace("ip", player.getAddress().getAddress().getHostAddress());
+        data.addOrReplace("lastLogin", LocalDateTime.now().toString());
+
+        data.addIfNotExists("firstLogin", LocalDateTime.now().toString());
+
+        Messenger.sendMessage(player, Component.text("Hello!"));
+        Messenger.sendErrorMessage(player, Component.text("This is an error message!"));
+        Messenger.sendSuccessMessage(player, Component.text("This is a success messsage!"));
+        Messenger.sendColorMessage(player, NamedTextColor.DARK_AQUA, Component.text("This is a colored text messsage!"));
+        Messenger.sendMessage(player, Text.gradientText("And this is gradient text!! :)",
+                Text.textColorToBukkitColor(NamedTextColor.AQUA),
+                Text.textColorToBukkitColor(NamedTextColor.GREEN)));
 
         if(TexturePackEnforcer.isEnforcePacks()) {
             try {

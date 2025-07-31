@@ -52,6 +52,24 @@ public class PlayerData {
         persistentData.put(key, data);
     }
 
+    public void addOrReplace(String key, Object data) {
+        if(hasKey(key)) {
+            persistentData.replace(key, data);
+        } else {
+            add(key, data);
+        }
+    }
+
+    public void addIfNotExists(String key, Object data) {
+        if(!hasKey(key)) {
+            add(key, data);
+        }
+    }
+
+    public boolean hasKey(String key) {
+        return persistentData.containsKey(key);
+    }
+
     // getter/setters for yaml
     public UUID getUuid() {
         return uuid;

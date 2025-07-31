@@ -57,7 +57,7 @@ public class GlobalData {
     }
 
     public void saveToSql() {
-        ConfigManager manager = Main.getInstance().getConfigManager();
+        ConfigManager manager = new ConfigManager(Main.getInstance());
         String globalDataTable = manager.getGlobalDataTable();
 
         String yaml = YamlUtil.objectToYaml(this);
@@ -72,7 +72,7 @@ public class GlobalData {
     }
 
     public void saveToDisk() {
-        ConfigManager manager = Main.getInstance().getConfigManager();
+        ConfigManager manager = new ConfigManager(Main.getInstance());
         String path = manager.getGlobalDataBackupPath();
 
         File playerDataFolder = new File(path);
@@ -86,7 +86,7 @@ public class GlobalData {
     }
 
     public void loadFromSQL() throws SQLException {
-        ConfigManager manager = Main.getInstance().getConfigManager();
+        ConfigManager manager = new ConfigManager(Main.getInstance());
         String globalDataTable = manager.getGlobalDataTable();
 
         dataList.clear();
@@ -110,7 +110,7 @@ public class GlobalData {
     }
 
     public void loadFromDisk() throws IOException {
-        ConfigManager manager = Main.getInstance().getConfigManager();
+        ConfigManager manager = new ConfigManager(Main.getInstance());
         String path = manager.getGlobalDataBackupPath();
 
         dataList.clear();

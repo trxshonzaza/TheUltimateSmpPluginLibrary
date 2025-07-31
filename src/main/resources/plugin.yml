@@ -1,4 +1,4 @@
-name: TheUltimateSMPPluginLibrary
+name: TheUltimateSmpPluginLibrary
 author: trxsh
 version: '1.0-SNAPSHOT'
 main: trxsh.ontop.theUltimateSMPLib.Main
@@ -8,3 +8,5 @@ website: https://github.com/trxshonzaza
 commands:
   save:
     description: save command
+  items:
+    description: item registry inventory

@@ -2,6 +2,10 @@
 #  theUltimateSMPLib - Config
 # ===============================
 
+# Messenger configuration
+messenger:
+  prefix: ""               # Text to append to the start of the message when calling any Messenger method
+
 # SQL database configuration
 sql:
   useSql: true
@@ -15,7 +19,7 @@ sql:
     player_data: "playerdata"   # Table for storing player-specific data from code (UUID, stats, etc.)
     global_data: "globaldata"   # Table for storing global data
 
-# File paths (for backups, logs, or external storage)
+# File paths (for external storage)
 paths:
   player_data_backup: "plugins/theUltimateSMPLib/data/player_data.yml"   # File path to backup player data
   global_data_backup: "plugins/theUltimateSMPLib/data/global_data.yml"   # File path to backup global data
@@ -27,7 +31,7 @@ texture_pack:
 
   # Texture packs to enforce to players
   # Key = SHA-1 hash (40 characters), Values = HTTPS direct download URL and whether its enabled or not
-  # All packs listed here will be sent to all joining players
+  # All packs listed here will be sent to all joining players if enabled
   packs:
     "5e4b7a5efc4a6d3c20b31d722f7e29e1a1c6718d":
       url: "https://example.com/pack1.zip"
