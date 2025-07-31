@@ -1,5 +1,6 @@
 package trxsh.ontop.theUltimateSMPLib.gui;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -7,6 +8,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import trxsh.ontop.theUltimateSMPLib.event.GuiChecker;
+import trxsh.ontop.theUltimateSMPLib.util.ItemUtil;
 
 public abstract class Gui {
     protected final String name;
@@ -22,6 +24,9 @@ public abstract class Gui {
 
         GuiChecker.listenForClicks(this);
     }
+
+    public abstract void onClick(InventoryClickEvent event);
+    public abstract void onClose(InventoryCloseEvent event);
 
     public void removeItem(ItemStack item) {
         inventory.remove(item);
@@ -43,6 +48,18 @@ public abstract class Gui {
         }
     }
 
+    public void fillWithGlassPane() {
+        for(int i = 0; i < slots; i++) {
+            ItemStack item = getItem(i);
+
+            if(item == null) {
+                addItemAt(ItemUtil.createQuickItem(Material.GRAY_STAINED_GLASS_PANE, Component.text(" "), null), i);
+            } else if(item.getType() == Material.AIR) {
+                addItemAt(ItemUtil.createQuickItem(Material.GRAY_STAINED_GLASS_PANE, Component.text(" "), null), i);
+            }
+        }
+    }
+
     public void addItem(ItemStack... items) {
         inventory.addItem(items);
     }
@@ -51,12 +68,13 @@ public abstract class Gui {
         inventory.setItem(slot, item);
     }
 
+    public ItemStack getItem(int slot) {
+        return inventory.getItem(slot);
+    }
+
     public Inventory getInventory() {
         return inventory;
     }
-
-    public abstract void onClick(InventoryClickEvent event);
-    public abstract void onClose(InventoryCloseEvent event);
 
     public void setAutoRemove(boolean autoRemove) {
         this.autoRemove = autoRemove;

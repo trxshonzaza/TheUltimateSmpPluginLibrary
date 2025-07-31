@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class ItemUtil {
-    public ItemStack createQuickItem(Material material, TextComponent name, List<TextComponent> lore) {
+    public static ItemStack createQuickItem(Material material, TextComponent name, List<TextComponent> lore) {
         ItemStack stack = new ItemStack(material);
 
         stack.editMeta(meta -> {
