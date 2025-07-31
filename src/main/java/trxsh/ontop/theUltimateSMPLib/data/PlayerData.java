@@ -39,12 +39,13 @@ public class PlayerData {
         return getOfflinePlayer().getPlayer();
     }
 
-    public Object get(String key) {
-        for (String k : persistentData.keySet()) {
-            if (k.equalsIgnoreCase(key)) {
-                return persistentData.get(k);
-            }
+    public <T> T get(String itemKey, Class<T> clazz) {
+        Object obj = persistentData.get(itemKey);
+
+        if (clazz.isInstance(obj)) {
+            return clazz.cast(obj);
         }
+
         return null;
     }
 
