@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class Raycasting {
-    public static List<LivingEntity> raycast(Location start, Vector direction, double maxDistance, Player shooter) {
+    public static List<LivingEntity> raycastEntities(Location start, Vector direction, double maxDistance, Player shooter) {
         World world = start.getWorld();
         Location currentLocation = start.clone();
 
@@ -37,7 +37,7 @@ public class Raycasting {
         return total;
     }
 
-    public static Location raycastBlock(Location start, Vector direction, double maxDistance) {
+    public static Location raycast(Location start, Vector direction, double maxDistance) {
         Location currentLocation = start.clone();
 
         for (double distance = 0; distance < maxDistance; distance += 0.1) {

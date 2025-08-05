@@ -1,5 +1,7 @@
 package trxsh.ontop.theUltimateSMPLib.util;
 
+import org.bukkit.Warning;
+import org.jetbrains.annotations.ApiStatus;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -21,7 +23,7 @@ public class YamlUtil {
         return yaml.dump(data);
     }
 
-    // this method is dangerous. it may allow for remote code execution as it allows every class to be instantiated. load YAML at your own risk.
+    // this method is dangerous! it may allow for remote code execution as it allows every class to be instantiated. load YAML at your own risk.
     public static <T> T yamlToObject(String yamlString, Class<T> clazz) {
         try {
             LoaderOptions options = new LoaderOptions();

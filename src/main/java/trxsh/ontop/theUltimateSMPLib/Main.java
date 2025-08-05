@@ -22,6 +22,7 @@ import trxsh.ontop.theUltimateSMPLib.event.GuiChecker;
 import trxsh.ontop.theUltimateSMPLib.event.Join;
 import trxsh.ontop.theUltimateSMPLib.event.SimpleEventHandler;
 import trxsh.ontop.theUltimateSMPLib.manager.PlayerDataManager;
+import trxsh.ontop.theUltimateSMPLib.other.Async;
 import trxsh.ontop.theUltimateSMPLib.other.Loops;
 import trxsh.ontop.theUltimateSMPLib.other.TexturePackEnforcer;
 import trxsh.ontop.theUltimateSMPLib.sql.SQL;
@@ -59,20 +60,23 @@ public final class Main extends JavaPlugin {
         getPluginManager().registerEvents(new GuiChecker(), this);
         getPluginManager().registerEvents(new SimpleEventHandler(), this);
 
-        try {
-            if(manager.useSql()) {
-                SQL.Initialize(manager.getSqlHost(), manager.getSqlPort(), manager.getSqlUser(), manager.getSqlPassword(), manager.getSqlDatabase());
-                createTables();
+        // keep SQL async if possible.
+        Async.run(() -> {
+            try {
+                if(manager.useSql()) {
+                    SQL.Initialize(manager.getSqlHost(), manager.getSqlPort(), manager.getSqlUser(), manager.getSqlPassword(), manager.getSqlDatabase());
+                    createTables();
 
-                PlayerDataManager.loadFromSQL();
-                globalData.loadFromSQL();
-            } else {
-                PlayerDataManager.loadFromDisk();
-                globalData.loadFromDisk();
+                    PlayerDataManager.loadFromSQL();
+                    globalData.loadFromSQL();
+                } else {
+                    PlayerDataManager.loadFromDisk();
+                    globalData.loadFromDisk();
+                }
+            } catch (SQLException | IOException | ClassNotFoundException e) {
+                throw new RuntimeException("encountered an error when loading data", e);
             }
-        } catch (SQLException | IOException | ClassNotFoundException e) {
-            throw new RuntimeException("encountered an error when loading data", e);
-        }
+        });
 
         TexturePackEnforcer.setEnforcePacks(manager.getTexturePackEnforceEnabled());
         TexturePackEnforcer.setPacks(manager.getEnabledTexturePacks());
@@ -82,15 +86,17 @@ public final class Main extends JavaPlugin {
     @Override
     public void onDisable() {
         // save everything here typically.
-        Collection<PlayerData> playerData = PlayerDataManager.getDataMap().values();
+        Async.run(() -> {
+            Collection<PlayerData> playerData = PlayerDataManager.getDataMap().values();
 
-        if(manager.useSql()) {
-            playerData.forEach(PlayerData::saveToSql);
-            globalData.saveToSql();
-        } else {
-            playerData.forEach(PlayerData::saveToDisk);
-            globalData.saveToDisk();
-        }
+            if(manager.useSql()) {
+                playerData.forEach(PlayerData::saveToSql);
+                globalData.saveToSql();
+            } else {
+                playerData.forEach(PlayerData::saveToDisk);
+                globalData.saveToDisk();
+            }
+        });
     }
 
     public static Main getInstance() {
