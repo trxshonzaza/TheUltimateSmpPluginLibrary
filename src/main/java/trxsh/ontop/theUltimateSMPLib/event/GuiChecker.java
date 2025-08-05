@@ -8,6 +8,7 @@ import trxsh.ontop.theUltimateSMPLib.gui.Gui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GuiChecker implements Listener {
     private static final List<Gui> guis = new ArrayList<>();
@@ -28,7 +29,12 @@ public class GuiChecker implements Listener {
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-        for(Gui gui : guis) {
+        List<Gui> snapshot;
+        synchronized (guis) {
+            snapshot = new ArrayList<>(guis);
+        }
+
+        for(Gui gui : snapshot) {
             if(event.getInventory().equals(gui.getInventory())) {
                 if(gui.shouldAutoRemove()) {
                     gui.onClose(event);

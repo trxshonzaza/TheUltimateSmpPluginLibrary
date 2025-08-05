@@ -16,15 +16,7 @@ public class SaveCommand implements CommandExecutor {
             PlayerData data = PlayerDataManager.get(player.getUniqueId());
 
             if(data != null) {
-                /*data.add("StringTest", "Hello YAML");
-                data.add("IntegerTest", 42);
-                data.add("BooleanTest", true);
-                data.add("DoubleTest", 3.1415);
-                data.add("ListTest", List.of("one", "two", "three"));
-                data.add("MapTest", Map.of("nestedKey", "nestedValue"));*/
-
-                //data.saveToDisk();
-                player.sendMessage("saved.");
+                player.sendMessage("data is valid.");
             } else {
                 player.sendMessage("data is null.");
             }

@@ -1,9 +1,16 @@
 package trxsh.ontop.theUltimateSMPLib;
 
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
+import io.papermc.paper.plugin.lifecycle.event.LifecycleEventOwner;
+import io.papermc.paper.plugin.lifecycle.event.handler.configuration.PrioritizedLifecycleEventHandlerConfiguration;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import io.papermc.paper.registry.event.RegistryEvents;
+import io.papermc.paper.registry.keys.EnchantmentKeys;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import trxsh.ontop.theUltimateSMPLib.command.ItemRegistryCommand;
@@ -13,6 +20,7 @@ import trxsh.ontop.theUltimateSMPLib.data.GlobalData;
 import trxsh.ontop.theUltimateSMPLib.data.PlayerData;
 import trxsh.ontop.theUltimateSMPLib.event.GuiChecker;
 import trxsh.ontop.theUltimateSMPLib.event.Join;
+import trxsh.ontop.theUltimateSMPLib.event.SimpleEventHandler;
 import trxsh.ontop.theUltimateSMPLib.manager.PlayerDataManager;
 import trxsh.ontop.theUltimateSMPLib.other.Loops;
 import trxsh.ontop.theUltimateSMPLib.other.TexturePackEnforcer;
@@ -43,12 +51,13 @@ public final class Main extends JavaPlugin {
         manager = new ConfigManager(this);
 
         //commands
-        getCommand("save").setExecutor(new SaveCommand());
+        getCommand("checkdata").setExecutor(new SaveCommand());
         getCommand("items").setExecutor(new ItemRegistryCommand());
 
         //events
         getPluginManager().registerEvents(new Join(), this);
         getPluginManager().registerEvents(new GuiChecker(), this);
+        getPluginManager().registerEvents(new SimpleEventHandler(), this);
 
         try {
             if(manager.useSql()) {

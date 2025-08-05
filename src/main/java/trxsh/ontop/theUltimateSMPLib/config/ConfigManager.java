@@ -1,5 +1,6 @@
 package trxsh.ontop.theUltimateSMPLib.config;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -107,5 +108,17 @@ public class ConfigManager {
             prefix = prefix + " ";
 
         return prefix;
+    }
+
+    // ==== CUSTOM VALUES IN CONFIG ====
+
+    public <T> T getValue(String path, Class<T> clazz) {
+        Object obj = config.get(path);
+
+        if(clazz.isInstance(obj))
+            return clazz.cast(obj);
+
+        Bukkit.getLogger().warning("custom config value at '" + path + "' is not of type " + clazz.getSimpleName());
+        return null;
     }
 }
