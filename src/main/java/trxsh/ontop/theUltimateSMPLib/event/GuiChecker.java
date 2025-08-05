@@ -36,8 +36,9 @@ public class GuiChecker implements Listener {
 
         for(Gui gui : snapshot) {
             if(event.getInventory().equals(gui.getInventory())) {
+                gui.onClose(event);
+
                 if(gui.shouldAutoRemove()) {
-                    gui.onClose(event);
                     remove(gui);
                 }
             }
