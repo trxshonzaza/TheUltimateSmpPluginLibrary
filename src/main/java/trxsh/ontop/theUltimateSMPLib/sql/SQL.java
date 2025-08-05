@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
 import java.sql.*;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class SQL {
@@ -43,7 +44,7 @@ public class SQL {
         return source.getConnection();
     }
 
-    public static void createTable(String tableName, Map<String, String> args) {
+    public static void createTable(String tableName, LinkedHashMap<String, String> args) {
         try(Connection con = getConnection()) {
             if(!initialized)
                 throw new SQLException("SQL is not initialized. (initialized boolean is false or Initialize not called)");
@@ -64,6 +65,45 @@ public class SQL {
 
                 index++;
             }
+
+            sb.append(");");
+
+            Bukkit.getLogger().info(sb.toString());
+
+            try(Statement ps = con.createStatement()) {
+                ps.executeUpdate(sb.toString());
+            }
+        } catch(SQLException e) {
+            Bukkit.getLogger().info("could not create table: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void createTable(String tableName, LinkedHashMap<String, String> args, String primaryKeyName) {
+        try(Connection con = getConnection()) {
+            if(!initialized)
+                throw new SQLException("SQL is not initialized. (initialized boolean is false or Initialize not called)");
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("CREATE TABLE ");
+            sb.append(tableName + " (");
+
+            int index = 0;
+
+            for(Map.Entry<String, String> entry : args.entrySet()) {
+                sb.append(entry.getKey() + " " + entry.getValue());
+
+                if(index != args.entrySet().size() - 1) {
+                    sb.append(", ");
+                }
+
+                index++;
+            }
+
+            sb.append(", PRIMARY KEY(");
+            sb.append(primaryKeyName);
+            sb.append(")");
 
             sb.append(");");
 

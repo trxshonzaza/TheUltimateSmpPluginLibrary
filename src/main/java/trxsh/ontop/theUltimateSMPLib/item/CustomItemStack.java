@@ -16,6 +16,7 @@ public abstract class CustomItemStack {
     private String itemKey;
     private final ItemStack itemInstance;
     private Map<String, PlayerAction> actions = new HashMap<>();
+    private PlayerAction passiveAction = null;
 
     public CustomItemStack(String itemKey) {
         this.itemKey = itemKey;
@@ -52,8 +53,16 @@ public abstract class CustomItemStack {
         }
     }
 
+    public void setPassiveAction(PlayerAction action) {
+        this.passiveAction = action;
+    }
+
     public Map<String, PlayerAction> getActions() {
         return actions;
+    }
+
+    public PlayerAction getPassiveAction() {
+        return passiveAction;
     }
 
     public String getItemKey() {

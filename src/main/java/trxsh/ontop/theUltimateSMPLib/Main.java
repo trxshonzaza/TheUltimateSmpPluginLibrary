@@ -32,6 +32,7 @@ import javax.sql.rowset.CachedRowSet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.bukkit.Bukkit.getPluginManager;
@@ -105,16 +106,19 @@ public final class Main extends JavaPlugin {
 
     private void createTables() {
         if(!SQL.tableExists(manager.getPlayerDataTable())) {
-            SQL.createTable(manager.getPlayerDataTable(), Map.of(
-                    "uuid", SqlConstants.UUID,
-                    "yaml", SqlConstants.LONGTEXT
-            ));
+            LinkedHashMap<String, String> map = new LinkedHashMap<>();
+
+            map.put("uuid", SqlConstants.UUID);
+            map.put("yaml", SqlConstants.LONGTEXT);
+
+            SQL.createTable(manager.getPlayerDataTable(), map);
         }
 
         if(!SQL.tableExists(manager.getGlobalDataTable())) {
-            SQL.createTable(manager.getGlobalDataTable(), Map.of(
-                    "yaml", SqlConstants.LONGTEXT
-            ));
+            LinkedHashMap<String, String> map = new LinkedHashMap<>();
+            map.put("yaml", SqlConstants.LONGTEXT);
+
+            SQL.createTable(manager.getGlobalDataTable(), map);
         }
     }
 
