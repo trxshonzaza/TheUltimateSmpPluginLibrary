@@ -16,7 +16,6 @@ public abstract class CustomItemStack {
     private String itemKey;
     private final ItemStack itemInstance;
     private Map<String, PlayerAction> actions = new HashMap<>();
-    private PlayerAction passiveAction = null;
 
     public CustomItemStack(String itemKey) {
         this.itemKey = itemKey;
@@ -25,12 +24,11 @@ public abstract class CustomItemStack {
 
     public abstract ItemStack createItem();
 
-
     /*
     YOU MUST USE THIS METHOD AFTER YOU ARE DONE CREATING YOUR ITEM!!!!!!
     WITHOUT THIS, THE PLUGIN WILL NOT BE ABLE TO IDENTIFY UNIQUE ITEMS!
      */
-    private ItemStack tagItem(ItemStack item) {
+    public ItemStack tagItem(ItemStack item) {
         NamespacedKey key = new NamespacedKey(Main.getInstance(), "custom_item_key");
         item.editMeta(meta -> {
             meta.getPersistentDataContainer().set(key, PersistentDataType.STRING, itemKey);
@@ -53,18 +51,10 @@ public abstract class CustomItemStack {
         }
     }
 
-    public void setPassiveAction(PlayerAction action) {
-        this.passiveAction = action;
-    }
-
     public Map<String, PlayerAction> getActions() {
         return actions;
     }
-
-    public PlayerAction getPassiveAction() {
-        return passiveAction;
-    }
-
+    
     public String getItemKey() {
         return itemKey;
     }

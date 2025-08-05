@@ -37,6 +37,6 @@ public class CustomItemRegistry {
     }
 
     public static boolean isCustomItem(ItemStack s) {
-        return getItems().values().stream().anyMatch(cs -> cs.getItemInstance().isSimilar(s));
+        return identifyItem(s) != null;
     }
 }

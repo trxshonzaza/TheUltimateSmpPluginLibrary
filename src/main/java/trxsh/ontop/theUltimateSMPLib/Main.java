@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import trxsh.ontop.theUltimateSMPLib.command.Credits;
 import trxsh.ontop.theUltimateSMPLib.command.ItemRegistryCommand;
 import trxsh.ontop.theUltimateSMPLib.command.SaveCommand;
 import trxsh.ontop.theUltimateSMPLib.config.ConfigManager;
@@ -42,6 +43,7 @@ public final class Main extends JavaPlugin {
     private static Main instance = null;
     private static GlobalData globalData = null;
     private static ConfigManager manager = null;
+    public static boolean initalizedSimpleEvent = false;
 
     @Override
     public void onEnable() {
@@ -55,11 +57,12 @@ public final class Main extends JavaPlugin {
         //commands
         getCommand("checkdata").setExecutor(new SaveCommand());
         getCommand("items").setExecutor(new ItemRegistryCommand());
+        getCommand("credits").setExecutor(new Credits());
 
         //events
         getPluginManager().registerEvents(new Join(), this);
         getPluginManager().registerEvents(new GuiChecker(), this);
-        getPluginManager().registerEvents(new SimpleEventHandler(), this);
+        new SimpleEventHandler().init(this);
 
         // keep SQL async if possible.
         Async.run(() -> {

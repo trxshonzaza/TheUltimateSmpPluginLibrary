@@ -31,4 +31,8 @@ public class Messenger {
         String prefix = Main.getInstance().getConfigManager().getMessengerPrefix();
         entity.sendMessage(Component.text(prefix).append(text));
     }
+
+    public static void space(Player entity) {
+        entity.sendMessage(Component.text(" "));
+    }
 }
