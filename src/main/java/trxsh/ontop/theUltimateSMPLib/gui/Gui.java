@@ -149,7 +149,7 @@ public abstract class Gui {
         GuiChecker.remove(this);
     }
 
-    public Map<Integer, GuiCallback<Gui>> getCallbacks() {
+    public Map<Integer, GuiCallback<? extends Gui>> getCallbacks() {
         return callbacks;
     }
 }

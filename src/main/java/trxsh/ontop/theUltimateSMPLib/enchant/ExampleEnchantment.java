@@ -16,12 +16,12 @@ public class ExampleEnchantment extends CustomEnchantment {
     }
 
     @Override
-    public boolean conflictsWithCustom(List<? extends CustomEnchantment> s) {
+    public boolean conflictsWithCustom(List<Class<? extends CustomEnchantment>> s) {
         return false;
     }
 
     @Override
-    public boolean conflictsWith(List<? extends Enchantment> s) {
+    public boolean conflictsWith(List<Enchantment> s) {
         return false;
     }
 }

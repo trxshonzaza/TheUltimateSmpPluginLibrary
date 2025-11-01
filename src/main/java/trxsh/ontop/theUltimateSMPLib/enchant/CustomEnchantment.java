@@ -48,8 +48,8 @@ public abstract class CustomEnchantment {
     }
 
     public abstract boolean canApplyTo(ItemStack s);
-    public abstract boolean conflictsWith(List<? extends Enchantment> s);
-    public abstract boolean conflictsWithCustom(List<? extends CustomEnchantment> s);
+    public abstract boolean conflictsWith(List<Enchantment> s); // static enchantment types
+    public abstract boolean conflictsWithCustom(List<Class<? extends CustomEnchantment>> s); // custom enchantment class types
 
     public void setBookLore(List<Component> bookLore) {
         this.bookLore = bookLore;

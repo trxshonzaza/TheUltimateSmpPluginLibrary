@@ -14,6 +14,7 @@ import trxsh.ontop.theUltimateSMPLib.manager.CustomEnchantmentRegistry;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static trxsh.ontop.theUltimateSMPLib.enchant.CustomEnchantment.*;
 import static trxsh.ontop.theUltimateSMPLib.manager.CustomEnchantmentRegistry.getCustomEnchantments;
@@ -44,7 +45,7 @@ public class Anvil implements Listener {
                 int levelA = getLevel(enchant, first);
                 int levelB = getLevel(enchant, second);
 
-                if(enchant.conflictsWith(result.getEnchantments().keySet().stream().toList()) || enchant.conflictsWithCustom(firstEnchants))
+                if(enchant.conflictsWith(result.getEnchantments().keySet().stream().toList()) || enchant.conflictsWithCustom(firstEnchants.stream().map(CustomEnchantment::getClass).collect(Collectors.toList())))
                     continue;
 
                 if (levelA == levelB && enchant.canApplyTo(result) ) {
