@@ -8,9 +8,13 @@ import org.bukkit.util.Vector;
 import trxsh.ontop.theUltimateSMPLib.Main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
-public class Entities {
+public class EntityHelper {
+    private static final List<UUID> hidden = new ArrayList<>();
+
     public static Player getClosestPlayer(Entity entity, double minDistance) {
         Player closest = null;
         double closestDistanceSquared = Double.MAX_VALUE;
@@ -47,6 +51,8 @@ public class Entities {
                 entity.showPlayer(Main.getInstance(), player);
             }
         });
+
+        hidden.remove(player.getUniqueId());
     }
     public static void hidePlayer(Player player) {
         Bukkit.getOnlinePlayers().forEach(entity -> {
@@ -54,6 +60,12 @@ public class Entities {
                 entity.hidePlayer(Main.getInstance(), player);
             }
         });
+
+        hidden.add(player.getUniqueId());
+    }
+
+    public static boolean isHidden(Player player) {
+        return hidden.contains(player.getUniqueId());
     }
 
     public static Vector getDirectionBetween(Entity e1, Entity e2) {

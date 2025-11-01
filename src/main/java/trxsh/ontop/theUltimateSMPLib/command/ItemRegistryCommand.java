@@ -7,7 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import trxsh.ontop.theUltimateSMPLib.enchant.CustomEnchantment;
 import trxsh.ontop.theUltimateSMPLib.item.CustomItemStack;
+import trxsh.ontop.theUltimateSMPLib.manager.CustomEnchantmentRegistry;
 import trxsh.ontop.theUltimateSMPLib.manager.CustomItemRegistry;
 
 public class ItemRegistryCommand implements CommandExecutor {
@@ -18,6 +20,10 @@ public class ItemRegistryCommand implements CommandExecutor {
 
             for(CustomItemStack itemStack : CustomItemRegistry.getItems().values()) {
                 inv.addItem(itemStack.createItem());
+            }
+
+            for(CustomEnchantment enchantment : CustomEnchantmentRegistry.getEnchants().values()) {
+                inv.addItem(enchantment.getBook());
             }
 
             player.openInventory(inv);

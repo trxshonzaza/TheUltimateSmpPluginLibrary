@@ -1,49 +1,49 @@
 package trxsh.ontop.theUltimateSMPLib;
 
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventOwner;
-import io.papermc.paper.plugin.lifecycle.event.handler.configuration.PrioritizedLifecycleEventHandlerConfiguration;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
-import io.papermc.paper.registry.event.RegistryEvents;
-import io.papermc.paper.registry.keys.EnchantmentKeys;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import trxsh.ontop.theUltimateSMPLib.command.Credits;
 import trxsh.ontop.theUltimateSMPLib.command.ItemRegistryCommand;
 import trxsh.ontop.theUltimateSMPLib.command.SaveCommand;
 import trxsh.ontop.theUltimateSMPLib.config.ConfigManager;
 import trxsh.ontop.theUltimateSMPLib.data.GlobalData;
 import trxsh.ontop.theUltimateSMPLib.data.PlayerData;
-import trxsh.ontop.theUltimateSMPLib.event.GuiChecker;
+import trxsh.ontop.theUltimateSMPLib.enchant.CustomEnchantment;
+import trxsh.ontop.theUltimateSMPLib.enchant.ExampleEnchantment;
+import trxsh.ontop.theUltimateSMPLib.event.Anvil;
+import trxsh.ontop.theUltimateSMPLib.event.ChangeItem;
+import trxsh.ontop.theUltimateSMPLib.event.gui.GuiChecker;
 import trxsh.ontop.theUltimateSMPLib.event.Join;
-import trxsh.ontop.theUltimateSMPLib.event.SimpleEventHandler;
+import trxsh.ontop.theUltimateSMPLib.event.simple.SimpleEventHandler;
+import trxsh.ontop.theUltimateSMPLib.item.CustomItemStack;
+import trxsh.ontop.theUltimateSMPLib.manager.CustomEnchantmentRegistry;
 import trxsh.ontop.theUltimateSMPLib.manager.PlayerDataManager;
 import trxsh.ontop.theUltimateSMPLib.other.Async;
-import trxsh.ontop.theUltimateSMPLib.other.Loops;
 import trxsh.ontop.theUltimateSMPLib.other.TexturePackEnforcer;
 import trxsh.ontop.theUltimateSMPLib.sql.SQL;
 import trxsh.ontop.theUltimateSMPLib.sql.SqlConstants;
+import trxsh.ontop.theUltimateSMPLib.util.CustomItemUtil;
 
-import javax.sql.rowset.CachedRowSet;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import static org.bukkit.Bukkit.getPluginManager;
-import static org.bukkit.Bukkit.getScheduler;
 
 public final class Main extends JavaPlugin {
     private static Main instance = null;
     private static GlobalData globalData = null;
     private static ConfigManager manager = null;
     public static boolean initalizedSimpleEvent = false;
+
+    private static CustomEnchantment enchant = null;
 
     @Override
     public void onEnable() {
@@ -54,14 +54,27 @@ public final class Main extends JavaPlugin {
         globalData = new GlobalData();
         manager = new ConfigManager(this);
 
+        ExampleEnchantment ex = new ExampleEnchantment("Example Enchantment", "ex_enchant", 3, 1);
+        CustomEnchantmentRegistry.register(ex);
+
         //commands
         getCommand("checkdata").setExecutor(new SaveCommand());
         getCommand("items").setExecutor(new ItemRegistryCommand());
         getCommand("credits").setExecutor(new Credits());
 
+        getCommand("applyenchant").setExecutor((commandSender, command, s, strings) -> {
+            if(commandSender instanceof Player player) {
+                CustomEnchantment.applyEnchantment(ex, player.getInventory().getItemInMainHand());
+            }
+
+            return true;
+        });
+
         //events
         getPluginManager().registerEvents(new Join(), this);
+        getPluginManager().registerEvents(new Anvil(), this);
         getPluginManager().registerEvents(new GuiChecker(), this);
+        getPluginManager().registerEvents(new ChangeItem(), this);
         new SimpleEventHandler().init(this);
 
         // keep SQL async if possible.
@@ -89,18 +102,20 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        // save everything here typically.
-        Async.run(() -> {
-            Collection<PlayerData> playerData = PlayerDataManager.getDataMap().values();
+        Collection<PlayerData> playerData = PlayerDataManager.getDataMap().values();
 
-            if(manager.useSql()) {
+        try {
+            if(manager.useSql() && SQL.isValid()) {
                 playerData.forEach(PlayerData::saveToSql);
                 globalData.saveToSql();
             } else {
                 playerData.forEach(PlayerData::saveToDisk);
                 globalData.saveToDisk();
             }
-        });
+        } catch(Exception e) {
+            Bukkit.getLogger().warning("An error occured when saving data: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public static Main getInstance() {

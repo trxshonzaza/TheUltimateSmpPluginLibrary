@@ -36,6 +36,21 @@ public class Loops {
         }.runTaskTimer(Main.getInstance(), 0, delay);
     }
 
+    public static void loopUntil(Runnable task, Runnable onComplete, int delay, Supplier<Boolean> condition) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if(condition.get()) {
+                    cancel();
+                    onComplete.run();
+                    return;
+                }
+
+                task.run();
+            }
+        }.runTaskTimer(Main.getInstance(), 0, delay);
+    }
+
     public static void loopForTicks(Runnable task, int delay, int maxTicks) {
         new BukkitRunnable() {
             int ticks = 0;

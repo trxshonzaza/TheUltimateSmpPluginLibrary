@@ -1,15 +1,12 @@
-package trxsh.ontop.theUltimateSMPLib.util;
+package trxsh.ontop.theUltimateSMPLib.yaml;
 
-import org.bukkit.Warning;
-import org.jetbrains.annotations.ApiStatus;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import org.yaml.snakeyaml.inspector.TagInspector;
 import org.yaml.snakeyaml.representer.Representer;
 
-public class YamlUtil {
+public class YamlHelper {
     public static String objectToYaml(Object data) {
         DumperOptions options = new DumperOptions();
 

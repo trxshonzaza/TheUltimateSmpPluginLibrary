@@ -1,4 +1,4 @@
-package trxsh.ontop.theUltimateSMPLib.item;
+package trxsh.ontop.theUltimateSMPLib.item.action;
 
 import org.bukkit.entity.Player;
 

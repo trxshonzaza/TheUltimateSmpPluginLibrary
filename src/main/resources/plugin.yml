@@ -12,3 +12,5 @@ commands:
     description: item registry inventory
   credits:
     description: credits
+  applyenchant:
+    description: applies custom enchantment test

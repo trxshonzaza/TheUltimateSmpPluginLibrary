@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,11 @@ public class Particles {
     public static void drawParticle(Particle p, Location l) {
         l.getWorld().spawnParticle(p, l.getX(),
                 l.getY(), l.getZ(), 1);
+    }
+
+    public static <T> void drawParticle(Particle p, Location l, @Nullable T options) {
+        l.getWorld().spawnParticle(p, l.getX(),
+                l.getY(), l.getZ(), 1, options);
     }
 
     public static void drawParticleBlock(Location l, BlockData data) {
@@ -87,6 +94,16 @@ public class Particles {
             Vector currentPosition = startPosition.clone().add(dir.clone().multiply(i));
 
             start.getWorld().spawnParticle(p, currentPosition.toLocation(start.getWorld()), 1);
+        }
+    }
+
+    public static void drawParticleLineBlock(BlockData p, Location start, Vector dir, double length, double rateOfChange) {
+        Vector startPosition = start.toVector();
+
+        for (double i = 0; i < length; i += rateOfChange) {
+            Vector currentPosition = startPosition.clone().add(dir.clone().multiply(i));
+
+            start.getWorld().spawnParticle(Particle.BLOCK, currentPosition.toLocation(start.getWorld()), 1, p);
         }
     }
 

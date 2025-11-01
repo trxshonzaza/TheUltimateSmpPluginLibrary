@@ -1,4 +1,4 @@
-package trxsh.ontop.theUltimateSMPLib.event;
+package trxsh.ontop.theUltimateSMPLib.event.gui;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

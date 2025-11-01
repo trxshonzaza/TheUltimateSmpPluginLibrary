@@ -14,7 +14,10 @@ public class CustomItemRegistry {
     private static final Map<String, CustomItemStack> items = new HashMap<>();
 
     public static void register(CustomItemStack item) {
-        items.put(item.getItemKey(), item);
+        if(items.containsKey(item.getItemKey())) throw new IllegalArgumentException("attempted to register an item with a similar key to " + get(item.getItemKey()).getClass().getName() + "!!! This is not allowed.");
+        else {
+            items.put(item.getItemKey(), item);
+        }
     }
 
     public static CustomItemStack get(String itemKey) {
@@ -34,6 +37,17 @@ public class CustomItemRegistry {
         if (itemKey == null) return null;
 
         return getItems().get(itemKey);
+    }
+
+    public static Class<? extends CustomItemStack> identifyItemType(ItemStack s) {
+        if (s == null || !s.hasItemMeta()) return null;
+
+        NamespacedKey key = new NamespacedKey(Main.getInstance(), "custom_item_key");
+        String itemKey = s.getItemMeta().getPersistentDataContainer().get(key, PersistentDataType.STRING);
+
+        if (itemKey == null) return null;
+
+        return getItems().get(itemKey).getClass();
     }
 
     public static boolean isCustomItem(ItemStack s) {

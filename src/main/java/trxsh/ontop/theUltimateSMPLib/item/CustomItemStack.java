@@ -1,12 +1,12 @@
 package trxsh.ontop.theUltimateSMPLib.item;
 
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
 import trxsh.ontop.theUltimateSMPLib.Main;
+import trxsh.ontop.theUltimateSMPLib.item.action.PlayerAction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,10 +19,16 @@ public abstract class CustomItemStack {
 
     public CustomItemStack(String itemKey) {
         this.itemKey = itemKey;
-        itemInstance = tagItem(createItem().clone());
+        this.itemInstance = createItem();
+
+        ItemMeta meta = createItem().getItemMeta();
+        if (meta == null || !meta.getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "custom_item_key"))) {
+            throw new IllegalStateException("You must tag your item or else it cannot be identified!!! (use tagItem() when returning your item in your createItem() method for the item " + this.itemKey + "!)");
+        }
     }
 
     public abstract ItemStack createItem();
+    public abstract void onUnequip(Player player, boolean dropped);
 
     /*
     YOU MUST USE THIS METHOD AFTER YOU ARE DONE CREATING YOUR ITEM!!!!!!

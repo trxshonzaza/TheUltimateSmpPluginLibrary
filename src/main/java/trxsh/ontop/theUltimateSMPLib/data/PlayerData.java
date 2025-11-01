@@ -5,15 +5,13 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import trxsh.ontop.theUltimateSMPLib.Main;
 import trxsh.ontop.theUltimateSMPLib.sql.SQL;
-import trxsh.ontop.theUltimateSMPLib.util.YamlUtil;
+import trxsh.ontop.theUltimateSMPLib.yaml.YamlHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerData {
     private Map<String, Object> persistentData = new HashMap<>();
@@ -47,6 +45,24 @@ public class PlayerData {
         }
 
         return null;
+    }
+
+    public void remove(String itemKey) {
+        persistentData.remove(itemKey);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getOrCreateList(String key, Class<T> type) {
+        List<?> raw = (List<?>) persistentData.get(key);
+        if (raw != null && !raw.isEmpty() && !type.isInstance(raw.get(0))) {
+            throw new IllegalStateException("Invalid type in list for key: " + key);
+        }
+
+        if (raw != null) return (List<T>) raw;
+
+        List<T> list = new ArrayList<>();
+        persistentData.put(key, list);
+        return list;
     }
 
     public void add(String key, Object data) {
@@ -89,7 +105,7 @@ public class PlayerData {
     }
 
     public void saveToSql() {
-        String yaml = YamlUtil.objectToYaml(this);
+        String yaml = YamlHelper.objectToYaml(this);
         String uuid = getUuid().toString();
 
         if(SQL.rowExists("playerData", "uuid = " + SQL.convertString(uuid))) {
@@ -108,7 +124,7 @@ public class PlayerData {
         if(!playerDataFolder.exists()) playerDataFolder.mkdirs();
 
         try(FileOutputStream fs = new FileOutputStream(path + "/" + uuid.toString() + ".yml")) {
-            fs.write(YamlUtil.objectToYaml(this).getBytes(StandardCharsets.UTF_8));
+            fs.write(YamlHelper.objectToYaml(this).getBytes(StandardCharsets.UTF_8));
         }catch(IOException e) {
             throw new RuntimeException("failed to save player data to disk", e);
         }

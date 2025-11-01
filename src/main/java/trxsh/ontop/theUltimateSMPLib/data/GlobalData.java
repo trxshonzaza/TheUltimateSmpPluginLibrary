@@ -1,14 +1,10 @@
 package trxsh.ontop.theUltimateSMPLib.data;
 
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 import trxsh.ontop.theUltimateSMPLib.Main;
 import trxsh.ontop.theUltimateSMPLib.config.ConfigManager;
-import trxsh.ontop.theUltimateSMPLib.item.CustomItemStack;
 import trxsh.ontop.theUltimateSMPLib.sql.SQL;
-import trxsh.ontop.theUltimateSMPLib.util.YamlUtil;
+import trxsh.ontop.theUltimateSMPLib.yaml.YamlHelper;
 
 import javax.sql.rowset.CachedRowSet;
 import java.io.File;
@@ -19,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class GlobalData {
 
@@ -34,6 +29,20 @@ public class GlobalData {
         dataList.put(key, data);
     }
 
+    public void addOrReplace(String key, Object data) {
+        if(hasKey(key)) {
+            dataList.replace(key, data);
+        } else {
+            add(key, data);
+        }
+    }
+
+    public void addIfNotExists(String key, Object data) {
+        if(!hasKey(key)) {
+            add(key, data);
+        }
+    }
+
     public <T> T get(String itemKey, Class<T> clazz) {
         Object obj = dataList.get(itemKey);
 
@@ -42,6 +51,14 @@ public class GlobalData {
         }
 
         return null;
+    }
+
+    public void remove(String itemKey) {
+        dataList.remove(itemKey);
+    }
+
+    public boolean hasKey(String key) {
+        return dataList.containsKey(key);
     }
 
     public void setDataList(Map<String, Object> data) {
@@ -60,7 +77,7 @@ public class GlobalData {
         ConfigManager manager = new ConfigManager(Main.getInstance());
         String globalDataTable = manager.getGlobalDataTable();
 
-        String yaml = YamlUtil.objectToYaml(this);
+        String yaml = YamlHelper.objectToYaml(this);
 
         if(SQL.rowExists(globalDataTable, null)) {
             SQL.update(globalDataTable, null, Map.of(
@@ -79,7 +96,7 @@ public class GlobalData {
         if(!playerDataFolder.exists()) playerDataFolder.mkdirs();
 
         try(FileOutputStream fs = new FileOutputStream(path + "/globaldata.yml")) {
-            fs.write(YamlUtil.objectToYaml(this).getBytes(StandardCharsets.UTF_8));
+            fs.write(YamlHelper.objectToYaml(this).getBytes(StandardCharsets.UTF_8));
         }catch(IOException e) {
             throw new RuntimeException("failed to save player data to disk", e);
         }
@@ -99,7 +116,7 @@ public class GlobalData {
             String yaml = rws.getString("yaml");
 
             try {
-                this.setDataList(YamlUtil.yamlToObject(yaml, GlobalData.class).getDataList());
+                this.setDataList(YamlHelper.yamlToObject(yaml, GlobalData.class).getDataList());
             }catch(Exception e) {
                 Bukkit.getLogger().warning("Failed to load global data: " + e.getMessage());
                 e.printStackTrace();
@@ -124,7 +141,7 @@ public class GlobalData {
         try(FileInputStream fs = new FileInputStream(file)) {
             String yaml = new String(fs.readAllBytes());
 
-            this.setDataList(YamlUtil.yamlToObject(yaml, GlobalData.class).getDataList());
+            this.setDataList(YamlHelper.yamlToObject(yaml, GlobalData.class).getDataList());
         }
     }
 }

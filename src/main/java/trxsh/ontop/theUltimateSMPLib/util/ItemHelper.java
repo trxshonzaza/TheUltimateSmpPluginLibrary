@@ -4,16 +4,14 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import io.papermc.paper.ban.BanListType;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.*;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ItemUtil {
+public class ItemHelper {
     public static ItemStack createQuickItem(Material material, TextComponent name, List<TextComponent> lore) {
         ItemStack stack = new ItemStack(material);
 

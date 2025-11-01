@@ -1,12 +1,11 @@
 package trxsh.ontop.theUltimateSMPLib.manager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import trxsh.ontop.theUltimateSMPLib.Main;
 import trxsh.ontop.theUltimateSMPLib.config.ConfigManager;
 import trxsh.ontop.theUltimateSMPLib.data.PlayerData;
 import trxsh.ontop.theUltimateSMPLib.sql.SQL;
-import trxsh.ontop.theUltimateSMPLib.util.YamlUtil;
+import trxsh.ontop.theUltimateSMPLib.yaml.YamlHelper;
 
 import javax.sql.rowset.CachedRowSet;
 import java.io.File;
@@ -48,7 +47,7 @@ public class PlayerDataManager {
             String yaml = rws.getString("yaml");
 
             try {
-                PlayerData data = YamlUtil.yamlToObject(yaml, PlayerData.class);
+                PlayerData data = YamlHelper.yamlToObject(yaml, PlayerData.class);
                 dataMap.put(uuid, data);
             }catch(Exception e) {
                 Bukkit.getLogger().warning("Failed to load data for UUID: " + uuid + " - " + e.getMessage());
@@ -74,7 +73,7 @@ public class PlayerDataManager {
         for(File file : files) {
             try(FileInputStream fs = new FileInputStream(file)) {
                 String yaml = new String(fs.readAllBytes());
-                PlayerData data = YamlUtil.yamlToObject(yaml, PlayerData.class);
+                PlayerData data = YamlHelper.yamlToObject(yaml, PlayerData.class);
 
                 dataMap.put(data.getUuid(), data);
             }

@@ -3,26 +3,38 @@ package trxsh.ontop.theUltimateSMPLib.gui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import trxsh.ontop.theUltimateSMPLib.event.GuiChecker;
-import trxsh.ontop.theUltimateSMPLib.util.ItemUtil;
+import org.jetbrains.annotations.Nullable;
+import trxsh.ontop.theUltimateSMPLib.event.gui.GuiChecker;
+import trxsh.ontop.theUltimateSMPLib.util.ItemHelper;
+
+import java.util.UUID;
 
 public abstract class Gui {
-    protected final String name;
+    protected final Component name;
     protected final Inventory inventory;
     protected final int slots;
+    private UUID id;
 
     private boolean autoRemove = false;
 
-    public Gui(String guiName, int slots) {
+    public Gui(Component guiName, int slots) {
         this.name = guiName;
+        this.id = UUID.randomUUID();
         this.slots = slots;
         this.inventory = Bukkit.createInventory(null, slots, guiName);
+    }
 
+    public void register() {
         GuiChecker.listenForClicks(this);
+    }
+
+    public void open(Player player) {
+        player.openInventory(getInventory());
     }
 
     public abstract void onClick(InventoryClickEvent event);
@@ -53,11 +65,35 @@ public abstract class Gui {
             ItemStack item = getItem(i);
 
             if(item == null) {
-                addItemAt(ItemUtil.createQuickItem(Material.GRAY_STAINED_GLASS_PANE, Component.text(" "), null), i);
+                addItemAt(ItemHelper.createQuickItem(Material.GRAY_STAINED_GLASS_PANE, Component.text(" "), null), i);
             } else if(item.getType() == Material.AIR) {
-                addItemAt(ItemUtil.createQuickItem(Material.GRAY_STAINED_GLASS_PANE, Component.text(" "), null), i);
+                addItemAt(ItemHelper.createQuickItem(Material.GRAY_STAINED_GLASS_PANE, Component.text(" "), null), i);
             }
         }
+    }
+
+    public @Nullable Integer findItem(ItemStack s) {
+        for(int i = 0; i < slots; i++) {
+            ItemStack item = getItem(i);
+
+            if(item != null)
+                if(item.isSimilar(s))
+                    return i;
+        }
+
+        return null;
+    }
+
+    public @Nullable Integer findMaterial(Material m) {
+        for(int i = 0; i < slots; i++) {
+            ItemStack item = getItem(i);
+
+            if(item != null)
+                if(item.getType() == m)
+                    return i;
+        }
+
+        return null;
     }
 
     public void addItem(ItemStack... items) {
@@ -70,6 +106,10 @@ public abstract class Gui {
 
     public ItemStack getItem(int slot) {
         return inventory.getItem(slot);
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public Inventory getInventory() {

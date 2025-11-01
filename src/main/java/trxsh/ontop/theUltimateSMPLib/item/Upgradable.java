@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import trxsh.ontop.theUltimateSMPLib.Main;
+import trxsh.ontop.theUltimateSMPLib.item.action.UpgradablePlayerAction;
 import trxsh.ontop.theUltimateSMPLib.manager.CustomItemRegistry;
 
 import javax.annotation.Nullable;
@@ -17,10 +18,6 @@ public abstract class Upgradable extends CustomItemStack {
 
     public Upgradable(String itemKey) {
         super(itemKey);
-
-        addUpgradableAction("hheh", (player, i) -> {
-
-        });
     }
 
     public abstract void onLevelChanged(ItemStack stack, int level, @Nullable Player player);
