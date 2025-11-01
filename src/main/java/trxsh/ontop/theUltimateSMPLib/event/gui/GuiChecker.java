@@ -23,6 +23,12 @@ public class GuiChecker implements Listener {
         for (Gui gui : snapshot) {
             if (event.getInventory().equals(gui.getInventory())) {
                 gui.onClick(event);
+
+                int slot = event.getSlot();
+
+                if(gui.getCallbacks().containsKey(slot)) {
+                    gui.getCallbacks().get(slot).accept(gui, event);
+                }
             }
         }
     }

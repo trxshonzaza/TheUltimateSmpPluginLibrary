@@ -34,16 +34,15 @@ public class Join implements Listener {
 
         data.addOrReplace("ip", player.getAddress().getAddress().getHostAddress());
         data.addOrReplace("lastLogin", LocalDateTime.now().toString());
-
         data.addIfNotExists("firstLogin", LocalDateTime.now().toString());
 
-        Messenger.sendMessage(player, Component.text("Hello!"));
+        /*Messenger.sendMessage(player, Component.text("Hello!"));
         Messenger.sendErrorMessage(player, Component.text("This is an error message!"));
         Messenger.sendSuccessMessage(player, Component.text("This is a success messsage!"));
         Messenger.sendColorMessage(player, NamedTextColor.DARK_AQUA, Component.text("This is a colored text messsage!"));
         Messenger.sendMessage(player, Text.gradientText("And this is gradient text!! :)",
                 Text.textColorToBukkitColor(NamedTextColor.AQUA),
-                Text.textColorToBukkitColor(NamedTextColor.GREEN)));
+                Text.textColorToBukkitColor(NamedTextColor.GREEN)));*/
 
         if(TexturePackEnforcer.isEnforcePacks()) {
             try {

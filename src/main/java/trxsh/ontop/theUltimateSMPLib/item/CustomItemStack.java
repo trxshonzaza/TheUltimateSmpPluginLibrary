@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class CustomItemStack {
-    private  int model = -1;
+    private int model = -1;
     private String itemKey;
     private final ItemStack itemInstance;
     private Map<String, PlayerAction> actions = new HashMap<>();

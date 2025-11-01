@@ -2,14 +2,20 @@ package trxsh.ontop.theUltimateSMPLib.util;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import io.papermc.paper.ban.BanListType;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataType;
+import trxsh.ontop.theUltimateSMPLib.Main;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public class ItemHelper {
     public static ItemStack createQuickItem(Material material, TextComponent name, List<TextComponent> lore) {
@@ -24,15 +30,13 @@ public class ItemHelper {
     }
 
     public static BanEntry<?> getBanEntryFromStack(ItemStack stack) {
-        if(stack.getItemMeta() == null)
-            return null;
+        ItemMeta meta = stack.getItemMeta();
+        NamespacedKey banKey = new NamespacedKey(Main.getInstance(), "ban_uuid");
 
-        if(!stack.getItemMeta().hasDisplayName())
-            return null;
+        if(meta == null) return null;
+        if(!meta.getPersistentDataContainer().has(banKey)) return null;
 
-        String name = stack.getItemMeta().getDisplayName();
-        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-
+        OfflinePlayer player = Bukkit.getOfflinePlayer(UUID.fromString(Objects.requireNonNull(meta.getPersistentDataContainer().get(banKey, PersistentDataType.STRING))));
         return Bukkit.getBanList(BanListType.PROFILE).getBanEntry(player.getPlayerProfile());
     }
 
@@ -42,15 +46,19 @@ public class ItemHelper {
         else if(entry.getBanTarget().getId() == null)
             return null;
 
-        Player player = Bukkit.getPlayer(entry.getBanTarget().getId());
+        NamespacedKey banKey = new NamespacedKey(Main.getInstance(), "ban_uuid");
+
+        OfflinePlayer player = Bukkit.getOfflinePlayer(entry.getBanTarget().getId());
 
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta meta = (SkullMeta) skull.getItemMeta();
 
         assert meta != null;
         meta.setOwningPlayer(player);
-        meta.setDisplayName(player.getName());
-        meta.setLore(Collections.singletonList("Was banned on " + entry.getCreated()));
+        meta.displayName(Component.text(player.getName()));
+        meta.lore(Collections.singletonList(Component.text("Was banned on " + entry.getCreated())));
+
+        meta.getPersistentDataContainer().set(banKey, PersistentDataType.STRING, player.getUniqueId().toString());
 
         skull.setItemMeta(meta);
 

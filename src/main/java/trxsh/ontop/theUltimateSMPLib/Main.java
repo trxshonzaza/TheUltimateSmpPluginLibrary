@@ -54,7 +54,7 @@ public final class Main extends JavaPlugin {
         globalData = new GlobalData();
         manager = new ConfigManager(this);
 
-        ExampleEnchantment ex = new ExampleEnchantment("Example Enchantment", "ex_enchant", 3, 1);
+        ExampleEnchantment ex = new ExampleEnchantment("Example Enchantment", "ex_enchant", 10, 1);
         CustomEnchantmentRegistry.register(ex);
 
         //commands

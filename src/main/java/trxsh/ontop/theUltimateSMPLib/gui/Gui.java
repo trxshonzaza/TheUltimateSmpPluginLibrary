@@ -10,15 +10,22 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import trxsh.ontop.theUltimateSMPLib.event.gui.GuiChecker;
+import trxsh.ontop.theUltimateSMPLib.gui.callback.GuiCallback;
 import trxsh.ontop.theUltimateSMPLib.util.ItemHelper;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class Gui {
     protected final Component name;
     protected final Inventory inventory;
     protected final int slots;
+
     private UUID id;
+
+    private final Map<Integer, GuiCallback<? extends Gui>> callbacks = new ConcurrentHashMap<>();
 
     private boolean autoRemove = false;
 
@@ -31,6 +38,20 @@ public abstract class Gui {
 
     public void register() {
         GuiChecker.listenForClicks(this);
+    }
+
+    public void addCallback(int slot, GuiCallback<? extends Gui> callback) {
+        if(callbacks.containsKey(slot)) Bukkit.getLogger().warning("replacing an existing callback on slot " + slot);
+        callbacks.put(slot, callback);
+    }
+
+    public void removeCallback(int slot) {
+        if(callbacks.containsKey(slot)) callbacks.remove(slot);
+        else Bukkit.getLogger().warning("slot passed does not have a callback: " + slot);
+    }
+
+    public void clearCallbacks() {
+        callbacks.clear();
     }
 
     public void open(Player player) {
@@ -126,5 +147,9 @@ public abstract class Gui {
 
     public void unregister() {
         GuiChecker.remove(this);
+    }
+
+    public Map<Integer, GuiCallback<Gui>> getCallbacks() {
+        return callbacks;
     }
 }
