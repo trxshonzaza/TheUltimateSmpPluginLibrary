@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * helper for GUI. thats it
+ */
 public class GuiChecker implements Listener {
     private static final List<Gui> guis = new ArrayList<>();
 

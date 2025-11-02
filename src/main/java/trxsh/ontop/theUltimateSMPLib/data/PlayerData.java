@@ -14,6 +14,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
+/**
+ * Player Data container. Saves all data in the map per unique player to either SQL or disk.
+ */
 public class PlayerData {
     private Map<String, Object> persistentData = new HashMap<>();
     private UUID uuid;
@@ -26,6 +29,9 @@ public class PlayerData {
 
     }
 
+    /*
+    Creates player data object for a unique bukkit player
+     */
     public static PlayerData Create(Player player) {
         return new PlayerData(player.getUniqueId());
     }

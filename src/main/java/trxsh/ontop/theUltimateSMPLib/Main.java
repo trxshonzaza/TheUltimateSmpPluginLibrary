@@ -77,7 +77,7 @@ public final class Main extends JavaPlugin {
         getPluginManager().registerEvents(new ChangeItem(), this);
         new SimpleEventHandler().init(this);
 
-        // keep SQL async if possible.
+        // keep SQL async if possible!
         Async.run(() -> {
             try {
                 if(manager.useSql()) {

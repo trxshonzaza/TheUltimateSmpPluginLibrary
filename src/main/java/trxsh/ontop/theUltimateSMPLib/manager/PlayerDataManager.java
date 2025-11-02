@@ -16,14 +16,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Player data manager. handles all player data
+ */
 public class PlayerDataManager {
     private static final Map<UUID, PlayerData> dataMap = new HashMap<>();
 
+    /**
+     * adds a player's data to a list. can be retrieved
+     * See: get(UUID uuid)
+     * @param data
+     * @return
+     */
     public static PlayerData add(PlayerData data) {
         dataMap.put(data.getUuid(), data);
         return data;
     }
 
+    /**
+     * Gets player data based on UUID.
+     * @param uuid
+     * @return
+     */
     public static PlayerData get(UUID uuid) {
         return dataMap.get(uuid);
     }

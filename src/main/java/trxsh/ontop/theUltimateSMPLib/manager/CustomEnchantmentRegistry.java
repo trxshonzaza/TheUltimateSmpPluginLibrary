@@ -14,9 +14,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * custom enchantment registry
+ * See: CustomEnchantment.java
+ */
 public class CustomEnchantmentRegistry {
     private static final Map<String, CustomEnchantment> enchants = new HashMap<>();
 
+    /**
+     * registers a custom enchantment.
+     * @param enchant
+     */
     public static void register(CustomEnchantment enchant) {
         if(enchants.containsKey(enchant.getEnchantKey())) throw new IllegalArgumentException("attempted to register an enchantment with a similar key to " + get(enchant.getEnchantKey()).getClass().getName() + "!!! This is not allowed.");
         else {
@@ -32,6 +40,11 @@ public class CustomEnchantmentRegistry {
         return enchants;
     }
 
+    /**
+     * gets all custom enchantments on an item.
+     * @param s
+     * @return
+     */
     public static List<CustomEnchantment> getCustomEnchantments(ItemStack s) {
         List<CustomEnchantment> enchantments = new ArrayList<>();
 
@@ -47,6 +60,16 @@ public class CustomEnchantmentRegistry {
         return enchantments;
     }
 
+    /**
+     * gets specific enchantment on an item if it has it.
+     * {@snippet :
+     * getCustomEnchantment(stack, aCustomEnchantment.class)
+     * }
+     * @param s
+     * @param type
+     * @return
+     * @param <T>
+     */
     public static <T extends CustomEnchantment> CustomEnchantment getCustomEnchantment(ItemStack s, Class<T> type) {
         if (s == null || !s.hasItemMeta()) return null;
         ItemMeta meta = s.getItemMeta();
@@ -62,10 +85,22 @@ public class CustomEnchantmentRegistry {
         return null;
     }
 
+    /**
+     * returns true if the item stack has any custom enchantments.
+     * @param s
+     * @return
+     */
     public static boolean hasCustomEnchantment(ItemStack s) {
         return getCustomEnchantment(s, CustomEnchantment.class) != null;
     }
 
+    /**
+     * returns true if the item stack has the specific custom enchantment based on type.
+     * @param s
+     * @param type
+     * @return
+     * @param <T>
+     */
     public static <T extends CustomEnchantment> boolean hasCustomEnchantment(ItemStack s, Class<T> type) {
         return getCustomEnchantment(s, type) != null;
     }

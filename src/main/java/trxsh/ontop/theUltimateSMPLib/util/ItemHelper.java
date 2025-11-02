@@ -17,7 +17,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Item helper.
+ */
 public class ItemHelper {
+    /**
+     * creates item.
+     * @param material
+     * @param name
+     * @param lore
+     * @return
+     */
     public static ItemStack createQuickItem(Material material, TextComponent name, List<TextComponent> lore) {
         ItemStack stack = new ItemStack(material);
 

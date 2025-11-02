@@ -10,9 +10,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Custom event handler. Runs custom events
+ */
 public class CustomEventHandler {
     private static final List<EventRunnable> registeredListeners = Collections.synchronizedList(new ArrayList<>());
 
+    /**
+     * fires custom event. source and args can be null
+     * @param eventId
+     * @param source
+     * @param arguments
+     */
     public static void fire(String eventId, @Nullable Object source, @Nullable List<?> arguments) {
         CustomEvent event = new CustomEvent(eventId);
 
@@ -27,6 +36,18 @@ public class CustomEventHandler {
         }
     }
 
+    /**
+     * registers an event. instantiate EventRunnable in method args to listen for an id specified.
+     * {@snippet :
+     * registerEvent(new EventRunnable("id_here") {
+     *             @Override
+     *             public void run(CustomEvent event) {
+     *                 // your code
+     *             }
+     *         });
+     * }
+     * @param runnable
+     */
     public static void registerEvent(EventRunnable runnable) {
         if (registeredListeners.stream().anyMatch(r -> r.getListeningId().equals(runnable.getListeningId())))
             throw new IllegalStateException("event listener for " + runnable.getListeningId() + " already registered");

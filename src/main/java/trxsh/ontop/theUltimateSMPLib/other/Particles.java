@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Particle helper.
+ */
 public class Particles {
     public static void drawParticle(Particle p, Location l) {
         l.getWorld().spawnParticle(p, l.getX(),

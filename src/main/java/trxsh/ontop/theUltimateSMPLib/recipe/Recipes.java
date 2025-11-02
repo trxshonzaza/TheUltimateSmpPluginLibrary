@@ -11,9 +11,28 @@ import org.bukkit.inventory.ShapedRecipe;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Recipe helper.
+ */
 public class Recipes {
     private static final List<NamespacedKey> recipeKeys = new ArrayList<>();
 
+    /**
+     * Create a recipe. does not add it to bukkit recipes.
+     * Recipe object must be Material, ItemStack, RecipeChoice.ExactCohice, or RecipeChoice.MaterialChoice
+     * {@snippet :
+     * createRecipe(new NamespacedKey("a_key"), resultStack, List.of(
+     *                 Pair.of('A', recipeObject1),
+     *                 Pair.of('B', recipeObject2),
+     *                 Pair.of('C', recipeObject3)
+     *         ), "ABA", "BCB", "CAC");
+     * }
+     * @param key
+     * @param result
+     * @param shapeMap
+     * @param shape
+     * @return
+     */
     public static ShapedRecipe createRecipe(NamespacedKey key, ItemStack result, List<Pair<Character, Object>> shapeMap, String... shape) {
         if(recipeKeys.contains(key)) throw new IllegalCallerException("Tried to make a recipe with the same key");
 
@@ -37,6 +56,22 @@ public class Recipes {
         return recipe;
     }
 
+    /**
+     * Create a recipe. adds it to bukkit recipes.
+     * Recipe object must be Material, ItemStack, RecipeChoice.ExactChoice, or RecipeChoice.MaterialChoice
+     * {@snippet :
+     * createThenAddRecipe(new NamespacedKey("a_key"), resultStack, List.of(
+     *                 Pair.of('A', recipeObject1),
+     *                 Pair.of('B', recipeObject2),
+     *                 Pair.of('C', recipeObject3)
+     *         ), "ABA", "BCB", "CAC");
+     * }
+     * @param key
+     * @param result
+     * @param shapeMap
+     * @param shape
+     * @return
+     */
     public static ShapedRecipe createThenAddRecipe(NamespacedKey key, ItemStack result, List<Pair<Character, Object>> shapeMap, String... shape) {
         if(recipeKeys.contains(key)) throw new IllegalCallerException("Tried to make a recipe with the same key");
 

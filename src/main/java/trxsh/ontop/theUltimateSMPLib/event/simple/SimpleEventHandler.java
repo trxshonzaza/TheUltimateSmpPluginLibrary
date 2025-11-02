@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Handles simple events.
+ */
 public class SimpleEventHandler implements Listener {
     @EventHandler
     public void onEvent(Event event) {
@@ -28,6 +31,13 @@ public class SimpleEventHandler implements Listener {
         }
     }
 
+    /**
+     * calls an event. do not run this.
+     * See: SimpleEvent.java
+     * @param action
+     * @param event
+     * @param <T>
+     */
     @SuppressWarnings("unchecked")
     private <T extends Event> void callEventAction(EventAction<? extends Event> action, Event event) {
         ((EventAction<T>) action).run((T) event);

@@ -11,6 +11,10 @@ import trxsh.ontop.theUltimateSMPLib.item.action.PlayerAction;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * custom item stack wrapper.
+ * See: CustomItemRegistry.java
+ */
 public abstract class CustomItemStack {
     private int model = -1;
     private String itemKey;
@@ -27,12 +31,20 @@ public abstract class CustomItemStack {
         }
     }
 
+    /**
+     * creates your item. MUST RETURN ITEM WITH TAG.
+     * See: tagItem(ItemStack item)
+     * @return
+     */
     public abstract ItemStack createItem();
     public abstract void onUnequip(Player player, boolean dropped);
 
-    /*
-    YOU MUST USE THIS METHOD AFTER YOU ARE DONE CREATING YOUR ITEM!!!!!!
-    WITHOUT THIS, THE PLUGIN WILL NOT BE ABLE TO IDENTIFY UNIQUE ITEMS!
+    /**
+     * YOU MUST USE THIS METHOD AFTER YOU ARE DONE CREATING YOUR ITEM!!!!!!
+     * WITHOUT THIS, THE PLUGIN WILL NOT BE ABLE TO IDENTIFY UNIQUE ITEMS!
+     * See: CustomItemRegistry.java
+     * @param item
+     * @return
      */
     public ItemStack tagItem(ItemStack item) {
         NamespacedKey key = new NamespacedKey(Main.getInstance(), "custom_item_key");
@@ -43,10 +55,26 @@ public abstract class CustomItemStack {
         return item;
     }
 
+    /**
+     * adds a action based on key to run when called.
+     * {@snippet :
+     * addAction("a_key", (playerThatRanIt -> {
+     *             // code goes here
+     *         }));
+     * }
+     * @param key
+     * @param task
+     */
     public void addAction(String key, PlayerAction task) {
         actions.put(key, task);
     }
 
+    /**
+     * calls action based on key
+     * See: addAction(String key, PlayerAction task)
+     * @param key
+     * @param player
+     */
     public void runAction(String key, Player player) {
         PlayerAction action = actions.get(key);
 

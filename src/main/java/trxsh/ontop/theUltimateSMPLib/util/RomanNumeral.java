@@ -2,6 +2,9 @@ package trxsh.ontop.theUltimateSMPLib.util;
 
 import java.util.TreeMap;
 
+/**
+ * Roman numeral converter.
+ */
 // credit to https://stackoverflow.com/questions/12967896/converting-integers-to-roman-numerals-java :)
 public class RomanNumeral {
     private final static TreeMap<Integer, String> map = new TreeMap<>();

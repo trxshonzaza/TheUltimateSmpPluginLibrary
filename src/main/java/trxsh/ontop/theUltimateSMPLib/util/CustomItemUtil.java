@@ -8,6 +8,14 @@ import trxsh.ontop.theUltimateSMPLib.manager.CustomItemRegistry;
 
 import java.util.function.BiConsumer;
 
+/**
+ * Utility to run code if the specific item stack of type if being held in specified player's hand.
+ * {@snippet :
+ * runIfHolding(player, YourCustomItemStack.class, (equipSlot, customItem) -> {
+ *             // your code here
+ *         });
+ * }
+ */
 public class CustomItemUtil {
     public static <T extends CustomItemStack> void runIfHolding(Player player, Class<T> itemType, BiConsumer<EquipmentSlot, T> action) {
         for (EquipmentSlot slot : EquipmentSlot.values()) {

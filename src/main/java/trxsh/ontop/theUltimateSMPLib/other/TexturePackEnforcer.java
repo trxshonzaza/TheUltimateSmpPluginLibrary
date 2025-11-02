@@ -6,6 +6,10 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Texture pack wrapper.
+ * Enforces texture packs
+ */
 public class TexturePackEnforcer {
     private static boolean enforcePacks = false;
 

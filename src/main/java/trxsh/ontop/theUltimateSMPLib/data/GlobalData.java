@@ -16,6 +16,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Global Data container. Saves all data in the map to either SQL or disk.
+ */
 public class GlobalData {
 
     private Map<String, Object> dataList = new HashMap<>();

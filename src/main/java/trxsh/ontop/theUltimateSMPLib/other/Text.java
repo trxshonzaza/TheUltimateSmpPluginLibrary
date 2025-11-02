@@ -5,11 +5,20 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Color;
 
+/**
+ * text helper.
+ */
 public class Text {
     private static final String[] chars = new String[] {
             "ᴀ","ʙ","ᴄ","ᴅ","ᴇ","ғ","ɢ","ʜ","ɪ","ᴊ","ᴋ","ʟ","ᴍ","ɴ","ᴏ","ᴘ","ǫ","ʀ","s","ᴛ","ᴜ","ᴠ","ᴡ","x","ʏ","ᴢ","A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z","1","2","3","4","5","6","7","8","9","0"
     };
 
+    /**
+     * converts raw text to small text.
+     * Example: ᴛʜɪs
+     * @param text
+     * @return
+     */
     public static String toSmallText(String text) {
         String in = text.toLowerCase();
         StringBuilder result = new StringBuilder();
@@ -51,6 +60,13 @@ public class Text {
         return result.toString();
     }
 
+    /**
+     * turns raw text into a text component with a gradient text, lerping from start color to end color.
+     * @param text
+     * @param start
+     * @param end
+     * @return
+     */
     public static TextComponent gradientText(String text, Color start, Color end) {
         if (text == null || text.isEmpty()) return Component.empty();
         int length = text.length();
@@ -68,6 +84,11 @@ public class Text {
         return componentBuilder.build();
     }
 
+    /**
+     * turns TextColor (adventure api) to bukkit color.
+     * @param color
+     * @return
+     */
     public static Color textColorToBukkitColor(TextColor color) {
         return Color.fromRGB(color.red(), color.green(), color.blue());
     }

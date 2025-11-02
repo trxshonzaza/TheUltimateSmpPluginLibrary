@@ -2,6 +2,8 @@ package trxsh.ontop.theUltimateSMPLib.sql;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.sql.rowset.CachedRowSet;
 import javax.sql.rowset.RowSetProvider;
@@ -9,11 +11,26 @@ import java.sql.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * SQL helper/wrapper. Used to save data if disk is not used.
+ * Try to run SQL methods in Async to prevent blocking on the main thread!
+ */
 public class SQL {
     public static String url, username, password, database;
     private static HikariDataSource source;
     private static boolean initialized = false;
-    
+
+    /**
+     * Initialize SQL. you typically shouldn't run this as it is called first at runtime by the main class
+     * Only run this if SQL initialization failed or if you have to.
+     * @param url
+     * @param port
+     * @param username
+     * @param password
+     * @param database
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
     public static void Initialize(String url, int port, String username, String password, String database) throws ClassNotFoundException, SQLException {
         SQL.url = url;
         SQL.username = username;
@@ -79,7 +96,7 @@ public class SQL {
         }
     }
 
-    public static void createTable(String tableName, LinkedHashMap<String, String> args, String primaryKeyName) {
+    public static void createTableAndPrimaryKey(String tableName, LinkedHashMap<String, String> args, @NotNull String primaryKeyName) {
         try(Connection con = getConnection()) {
             if(!initialized)
                 throw new SQLException("SQL is not initialized. (initialized boolean is false or Initialize not called)");
@@ -118,6 +135,13 @@ public class SQL {
         }
     }
 
+    /**
+     * Helper select method. cached row set is returned to maintain threaded queries.
+     * @param tableName
+     * @param columns
+     * @param condition
+     * @return
+     */
     public static CachedRowSet select(String tableName, String columns, String condition) {
         CachedRowSet rws = null;
 
@@ -153,6 +177,12 @@ public class SQL {
         return rws;
     }
 
+    /**
+     * Insert helper method
+     * @param tableName
+     * @param args
+     * @return
+     */
     public static int insert(String tableName, Object... args) {
         try(Connection con = getConnection()) {
             if(!initialized)
@@ -192,6 +222,12 @@ public class SQL {
         return 0;
     }
 
+    /**
+     * Helper update method
+     * @param tableName
+     * @param conditon
+     * @param args
+     */
     public static void update(String tableName, String conditon, Map<String, Object> args) {
         try(Connection con = getConnection()) {
             if(!initialized)
@@ -303,6 +339,11 @@ public class SQL {
         }
     }
 
+    /**
+     * converts raw text string into SQL readable string. Use when referencing strings in args.
+     * @param in
+     * @return
+     */
     public static String convertString(String in) {
         return "'" + in + "'";
     }

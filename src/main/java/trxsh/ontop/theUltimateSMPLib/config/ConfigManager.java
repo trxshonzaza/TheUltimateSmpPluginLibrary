@@ -9,6 +9,9 @@ import trxsh.ontop.theUltimateSMPLib.Main;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Config manager for SQL and Disk saves, Messenger prefix and custom values.
+ */
 public class ConfigManager {
 
     private final JavaPlugin plugin;

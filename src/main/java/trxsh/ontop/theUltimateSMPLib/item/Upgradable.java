@@ -12,6 +12,9 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Custom itemstack wrapper but with upgradable levels.
+ */
 public abstract class Upgradable extends CustomItemStack {
 
     private Map<String, UpgradablePlayerAction> actions = new HashMap<>();
@@ -22,6 +25,14 @@ public abstract class Upgradable extends CustomItemStack {
 
     public abstract void onLevelChanged(ItemStack stack, int level, @Nullable Player player);
 
+    /**
+     * sets level of an upgradable item stack.
+     * Will not set level without a tag.
+     * See: onLevelChanged(ItemStack stack, int level, @Nullable Player player);
+     * @param item
+     * @param level
+     * @param player
+     */
     public static void setLevel(ItemStack item, int level, @Nullable Player player) {
         NamespacedKey levelKey = new NamespacedKey(Main.getInstance(), "custom_item_level");
         NamespacedKey itemKey = new NamespacedKey(Main.getInstance(), "custom_item_key");
@@ -41,6 +52,11 @@ public abstract class Upgradable extends CustomItemStack {
         }
     }
 
+    /**
+     * sets level of an upgradable item stack without a tag.
+     * @param item
+     * @param level
+     */
     public static void setLevelNoTag(ItemStack item, int level) {
         NamespacedKey levelKey = new NamespacedKey(Main.getInstance(), "custom_item_level");
 
@@ -49,6 +65,11 @@ public abstract class Upgradable extends CustomItemStack {
         });
     }
 
+    /**
+     * gets level of an upgradable item stack.
+     * @param item
+     * @return
+     */
     public static int getLevel(ItemStack item) {
         NamespacedKey levelKey = new NamespacedKey(Main.getInstance(), "custom_item_level");
 
@@ -58,6 +79,12 @@ public abstract class Upgradable extends CustomItemStack {
         return level != null ? level : 0;
     }
 
+    /**
+     * calls action based on key and level
+     * @param key
+     * @param player
+     * @param i
+     */
     public void runUpgradableAction(String key, Player player, int i) {
         UpgradablePlayerAction action = actions.get(key);
 
@@ -68,6 +95,16 @@ public abstract class Upgradable extends CustomItemStack {
         }
     }
 
+    /**
+     * adds upgradable action to be called based on level.
+     * {@snippet :
+     * addUpgradableAction("a_key", (player, level) -> {
+     *             // code goes here
+     *         });
+     * }
+     * @param key
+     * @param action
+     */
     public void addUpgradableAction(String key, UpgradablePlayerAction action) {
         actions.put(key, action);
     }

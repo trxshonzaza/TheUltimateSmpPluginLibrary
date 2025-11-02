@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * Loops helper.
+ */
 public class Loops {
     private static final Map<String, BukkitRunnable> loops = new HashMap<>();
 

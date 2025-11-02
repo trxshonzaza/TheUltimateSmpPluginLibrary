@@ -6,7 +6,17 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.representer.Representer;
 
+/**
+ * YAML helper.
+ * converts objects to YAML, or from YAML to object.
+ * May be danger
+ */
 public class YamlHelper {
+    /**
+     * Converts any valid object datatype to YAML. (risky)
+     * @param data
+     * @return
+     */
     public static String objectToYaml(Object data) {
         DumperOptions options = new DumperOptions();
 
@@ -20,7 +30,14 @@ public class YamlHelper {
         return yaml.dump(data);
     }
 
-    // this method is dangerous! it may allow for remote code execution as it allows every class to be instantiated. load YAML at your own risk.
+    /**
+     * this method is dangerous! it may allow for remote code execution as it allows every class to be instantiated.
+     * load YAML at your own risk.
+     * @param yamlString
+     * @param clazz
+     * @return
+     * @param <T>
+     */
     public static <T> T yamlToObject(String yamlString, Class<T> clazz) {
         try {
             LoaderOptions options = new LoaderOptions();

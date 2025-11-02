@@ -10,9 +10,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Custom itemstack registry
+ */
 public class CustomItemRegistry {
     private static final Map<String, CustomItemStack> items = new HashMap<>();
 
+    /**
+     * registers a custom item stack to the registry. You should always do this.
+     * @param item
+     */
     public static void register(CustomItemStack item) {
         if(items.containsKey(item.getItemKey())) throw new IllegalArgumentException("attempted to register an item with a similar key to " + get(item.getItemKey()).getClass().getName() + "!!! This is not allowed.");
         else {
@@ -28,6 +35,11 @@ public class CustomItemRegistry {
         return items;
     }
 
+    /**
+     * returns the custom item stack class the item is assigned to
+     * @param s
+     * @return
+     */
     public static CustomItemStack identifyItem(ItemStack s) {
         if (s == null || !s.hasItemMeta()) return null;
 
@@ -39,6 +51,11 @@ public class CustomItemRegistry {
         return getItems().get(itemKey);
     }
 
+    /**
+     * returns the custom item stack type (as a class) that the item has
+     * @param s
+     * @return
+     */
     public static Class<? extends CustomItemStack> identifyItemType(ItemStack s) {
         if (s == null || !s.hasItemMeta()) return null;
 
@@ -50,6 +67,12 @@ public class CustomItemRegistry {
         return getItems().get(itemKey).getClass();
     }
 
+    /**
+     * returns true if the itemstack is a custom item
+     * See: identifyItem(ItemStack s)
+     * @param s
+     * @return
+     */
     public static boolean isCustomItem(ItemStack s) {
         return identifyItem(s) != null;
     }

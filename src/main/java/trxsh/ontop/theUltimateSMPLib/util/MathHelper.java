@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Math helper.
+ * typically for finding specific points or vectors that may require a bit of math.
+ */
 public class MathHelper {
     public static Location getPointInCircle(Location initial, int smoothness, int i, double r, TrigFunction function, ApplyTo... apply) {
         double angle = (2 * Math.PI * i) / smoothness;

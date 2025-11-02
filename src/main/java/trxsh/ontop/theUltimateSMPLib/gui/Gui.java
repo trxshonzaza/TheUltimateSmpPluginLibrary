@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Gui wrapper for inventories.
+ */
 public abstract class Gui {
     protected final Component name;
     protected final Inventory inventory;
@@ -36,10 +39,24 @@ public abstract class Gui {
         this.inventory = Bukkit.createInventory(null, slots, guiName);
     }
 
+    /**
+     * registers the GUI to listen for clicks. executes onClick and callbacks.
+     */
     public void register() {
         GuiChecker.listenForClicks(this);
     }
 
+    /**
+     * adds a callback to run a block of code when a specific slot is clicked.
+     * See: GuiCallback.java
+     * {@snippet :
+     * addCallback(10, (gui, event) -> {
+     *             // run code here
+     *         });
+     * }
+     * @param slot
+     * @param callback
+     */
     public void addCallback(int slot, GuiCallback<? extends Gui> callback) {
         if(callbacks.containsKey(slot)) Bukkit.getLogger().warning("replacing an existing callback on slot " + slot);
         callbacks.put(slot, callback);
@@ -93,6 +110,11 @@ public abstract class Gui {
         }
     }
 
+    /**
+     * finds the first slot that the specified itemstack is in
+     * @param s
+     * @return
+     */
     public @Nullable Integer findItem(ItemStack s) {
         for(int i = 0; i < slots; i++) {
             ItemStack item = getItem(i);
@@ -105,6 +127,11 @@ public abstract class Gui {
         return null;
     }
 
+    /**
+     * finds the first slot that the specified material is in
+     * @param m
+     * @return
+     */
     public @Nullable Integer findMaterial(Material m) {
         for(int i = 0; i < slots; i++) {
             ItemStack item = getItem(i);
@@ -137,6 +164,10 @@ public abstract class Gui {
         return inventory;
     }
 
+    /**
+     * autoRemove removes the GUI from listening when exited.
+     * @param autoRemove
+     */
     public void setAutoRemove(boolean autoRemove) {
         this.autoRemove = autoRemove;
     }

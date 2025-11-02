@@ -8,6 +8,10 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import trxsh.ontop.theUltimateSMPLib.Main;
 
+/**
+ * Chat message helper.
+ * See: ConfigManager.java
+ */
 public class Messenger {
     public static void sendMessage(Player entity, TextComponent text) {
         String prefix = Main.getInstance().getConfigManager().getMessengerPrefix();

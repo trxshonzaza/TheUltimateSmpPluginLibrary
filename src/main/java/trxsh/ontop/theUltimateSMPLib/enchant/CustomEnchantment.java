@@ -23,6 +23,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Custom Enchantment wrapper to allow custom enchantments.
+ * See: ExampleEnchantment.java
+ */
 public abstract class CustomEnchantment {
     public String displayName;
     public String name;
@@ -94,6 +98,9 @@ public abstract class CustomEnchantment {
                 "malformed enchant data (missing level)");
     }
 
+    /**
+    Sets specifed level to the specified enchantment in the item stack
+     */
     public static void setLevel(CustomEnchantment enchantment, ItemStack item, int level) {
         NamespacedKey enchantKey = new NamespacedKey(Main.getInstance(), enchantment.name + "_key");
         NamespacedKey levelKey = new NamespacedKey(Main.getInstance(), enchantment.name + "_level");
@@ -129,6 +136,9 @@ public abstract class CustomEnchantment {
         }));
     }
 
+    /*
+    Applies specified enchantment to an item stack
+     */
     public static ItemStack applyEnchantment(CustomEnchantment enchantment, ItemStack item) {
         NamespacedKey enchantKey = new NamespacedKey(Main.getInstance(), enchantment.name + "_key");
         NamespacedKey levelKey = new NamespacedKey(Main.getInstance(), enchantment.name + "_level");
