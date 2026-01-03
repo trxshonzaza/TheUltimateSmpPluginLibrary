@@ -28,7 +28,8 @@ import trxsh.ontop.theUltimateSMPLib.other.Async;
 import trxsh.ontop.theUltimateSMPLib.other.TexturePackEnforcer;
 import trxsh.ontop.theUltimateSMPLib.sql.SQL;
 import trxsh.ontop.theUltimateSMPLib.sql.SqlConstants;
-import trxsh.ontop.theUltimateSMPLib.util.CustomItemUtil;
+import trxsh.ontop.theUltimateSMPLib.util.ChestHelper;
+import trxsh.ontop.theUltimateSMPLib.util.CustomItemHelper;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -75,6 +76,7 @@ public final class Main extends JavaPlugin {
         getPluginManager().registerEvents(new Anvil(), this);
         getPluginManager().registerEvents(new GuiChecker(), this);
         getPluginManager().registerEvents(new ChangeItem(), this);
+        getPluginManager().registerEvents(new ChestHelper(), this);
         new SimpleEventHandler().init(this);
 
         // keep SQL async if possible!

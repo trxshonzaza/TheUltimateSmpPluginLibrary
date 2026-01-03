@@ -25,7 +25,7 @@ import java.util.Objects;
 
 /**
  * Custom Enchantment wrapper to allow custom enchantments.
- * See: ExampleEnchantment.java
+ * ee: ExampleEnchantment.java
  */
 public abstract class CustomEnchantment {
     public String displayName;

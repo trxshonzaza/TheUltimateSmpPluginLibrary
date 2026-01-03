@@ -16,7 +16,7 @@ import java.util.function.BiConsumer;
  *         });
  * }
  */
-public class CustomItemUtil {
+public class CustomItemHelper {
     public static <T extends CustomItemStack> void runIfHolding(Player player, Class<T> itemType, BiConsumer<EquipmentSlot, T> action) {
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             if (slot == EquipmentSlot.HAND || slot == EquipmentSlot.OFF_HAND) {

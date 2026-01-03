@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * helper for GUI. thats it
+ * helper for GUI. that's it
  */
 public class GuiChecker implements Listener {
     private static final List<Gui> guis = new ArrayList<>();
