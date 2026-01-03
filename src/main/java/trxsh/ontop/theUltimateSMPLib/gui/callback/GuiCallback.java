@@ -5,6 +5,6 @@ import trxsh.ontop.theUltimateSMPLib.gui.Gui;
 
 import java.util.function.Consumer;
 
-public interface GuiCallback<G extends Gui> {
-    void accept(G o, InventoryClickEvent e);
+public interface GuiCallback {
+    void accept(Gui o, InventoryClickEvent e);
 }

@@ -13,7 +13,6 @@ import trxsh.ontop.theUltimateSMPLib.event.gui.GuiChecker;
 import trxsh.ontop.theUltimateSMPLib.gui.callback.GuiCallback;
 import trxsh.ontop.theUltimateSMPLib.util.ItemHelper;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,7 +27,7 @@ public abstract class Gui {
 
     private UUID id;
 
-    private final Map<Integer, GuiCallback<? extends Gui>> callbacks = new ConcurrentHashMap<>();
+    private final Map<Integer, GuiCallback> callbacks = new ConcurrentHashMap<>();
 
     private boolean autoRemove = false;
 
@@ -57,7 +56,7 @@ public abstract class Gui {
      * @param slot
      * @param callback
      */
-    public void addCallback(int slot, GuiCallback<? extends Gui> callback) {
+    public void addCallback(int slot, GuiCallback callback) {
         if(callbacks.containsKey(slot)) Bukkit.getLogger().warning("replacing an existing callback on slot " + slot);
         callbacks.put(slot, callback);
     }
@@ -180,7 +179,7 @@ public abstract class Gui {
         GuiChecker.remove(this);
     }
 
-    public Map<Integer, GuiCallback<? extends Gui>> getCallbacks() {
+    public Map<Integer, GuiCallback> getCallbacks() {
         return callbacks;
     }
 }

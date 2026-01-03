@@ -9,13 +9,13 @@ import org.yaml.snakeyaml.representer.Representer;
 /**
  * YAML helper.
  * converts objects to YAML, or from YAML to object.
- * May be danger
+ * May be dangerous.
  */
 public class YamlHelper {
     /**
      * Converts any valid object datatype to YAML. (risky)
      * @param data
-     * @return
+     * @return yaml string. should probably save it
      */
     public static String objectToYaml(Object data) {
         DumperOptions options = new DumperOptions();
@@ -35,7 +35,7 @@ public class YamlHelper {
      * load YAML at your own risk.
      * @param yamlString
      * @param clazz
-     * @return
+     * @return object of type T
      * @param <T>
      */
     public static <T> T yamlToObject(String yamlString, Class<T> clazz) {
