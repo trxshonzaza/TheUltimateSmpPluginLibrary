@@ -31,18 +31,15 @@ public class SimpleEventHandler implements Listener {
         }
     }
 
-    /**
-     * calls an event. do not run this.
-     * See: SimpleEvent.java
-     * @param action
-     * @param event
-     * @param <T>
-     */
     @SuppressWarnings("unchecked")
     private <T extends Event> void callEventAction(EventAction<? extends Event> action, Event event) {
         ((EventAction<T>) action).run((T) event);
     }
 
+    /**
+     * initalizes the event wrapper. do not run this.
+     * @param plugin
+     */
     public void init(Plugin plugin) {
         if(Main.initalizedSimpleEvent) throw new RuntimeException("SimpleEvent can only be initalized once. do not call it in your plugin as the main library initalizes it already.");
 

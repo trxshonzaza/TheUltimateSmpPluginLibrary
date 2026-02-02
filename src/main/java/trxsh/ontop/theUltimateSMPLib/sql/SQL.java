@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * SQL helper/wrapper. Used to save data if disk is not used.
- * Try to run SQL methods in Async to prevent blocking on the main thread!
+ * Try to keep all SQL methods in Async to prevent blocking on the main thread!!
  */
 public class SQL {
     public static String url, username, password, database;

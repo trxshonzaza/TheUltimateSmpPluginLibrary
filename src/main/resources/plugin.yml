@@ -2,7 +2,7 @@ name: TheUltimateSmpPluginLibrary
 author: trxsh
 version: '1.0-SNAPSHOT'
 main: trxsh.ontop.theUltimateSMPLib.Main
-api-version: '1.21.4' # change to your server version!. should be a little cross compatible.
+api-version: '1.21.11' # change to your server version!. should be a little cross compatible.
 description: The Ultimate SMP Plugin Library!
 website: https://github.com/trxshonzaza
 commands:

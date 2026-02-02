@@ -12,6 +12,10 @@ import trxsh.ontop.theUltimateSMPLib.Main;
  * }
  */
 public class Async {
+    /**
+     * runs a task asynchronously
+     * @param runnable
+     */
     public static void run(Runnable runnable) {
         Bukkit.getScheduler().runTaskAsynchronously(Main.getInstance(), runnable);
     }

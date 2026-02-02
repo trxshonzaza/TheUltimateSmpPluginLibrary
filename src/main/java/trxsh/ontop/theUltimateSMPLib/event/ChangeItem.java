@@ -16,7 +16,9 @@ public class ChangeItem implements Listener {
 
         if(previousStack != null) {
             if(CustomItemRegistry.isCustomItem(previousStack)) {
-                CustomItemRegistry.identifyItem(previousStack).onUnequip(event.getPlayer(), false);
+                if (CustomItemRegistry.identifyItem(previousStack).onUnequip(event.getPlayer(), false)) {
+                    event.setCancelled(true);
+                }
             }
         }
     }
@@ -26,7 +28,9 @@ public class ChangeItem implements Listener {
         ItemStack stack = event.getItemDrop().getItemStack();
 
         if(CustomItemRegistry.isCustomItem(stack)) {
-            CustomItemRegistry.identifyItem(stack).onUnequip(event.getPlayer(), true);
+            if(CustomItemRegistry.identifyItem(stack).onUnequip(event.getPlayer(), true)) {
+                event.setCancelled(true);
+            }
         }
     }
 }

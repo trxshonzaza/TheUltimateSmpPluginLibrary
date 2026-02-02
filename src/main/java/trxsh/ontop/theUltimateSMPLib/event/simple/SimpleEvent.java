@@ -27,10 +27,6 @@ public class SimpleEvent {
      */
     public static <T extends Event> void registerEvent(Class<T> eventClass, EventAction<T> action) {
         events.put(eventClass, action);
-
-        registerEvent(PlayerJoinEvent.class, (event -> {
-            // run code here
-        }));
     }
 
     public static Collection<Map.Entry<Class<? extends Event>, EventAction<? extends Event>>> eventSet() {

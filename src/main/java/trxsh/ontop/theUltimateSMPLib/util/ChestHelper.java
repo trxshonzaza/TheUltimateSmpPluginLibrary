@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -40,7 +41,7 @@ public class ChestHelper implements Listener {
         items.add(Pair.of(structure, Pair.of(stack, chance)));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onOpenInventory(InventoryOpenEvent event) {
         if(event.getInventory().getHolder() instanceof BlockInventoryHolder blockHolder) {
             Block block = blockHolder.getBlock();
@@ -73,7 +74,13 @@ public class ChestHelper implements Listener {
         }
     }
 
-    private int randomFreeSlot(@NotNull Inventory inventory, @Nullable Random random) {
+    /**
+     * finds a free slot randomly in an inventory
+     * @param inventory
+     * @param random
+     * @return a random free slot in the inventory;
+     */
+    public static int randomFreeSlot(@NotNull Inventory inventory, @Nullable Random random) {
         if(inventory.getContents().length >= inventory.getSize() - 1) throw new IllegalArgumentException("inventory is full");
 
         Random rand = null;

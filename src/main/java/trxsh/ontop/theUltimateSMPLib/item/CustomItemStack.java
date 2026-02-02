@@ -2,6 +2,7 @@ package trxsh.ontop.theUltimateSMPLib.item;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -37,7 +38,14 @@ public abstract class CustomItemStack {
      * @return
      */
     public abstract ItemStack createItem();
-    public abstract void onUnequip(Player player, boolean dropped);
+
+    /**
+     * calls when the custom item is either switched or dropped.
+     * @param player
+     * @param dropped
+     * @return true to cancel the event.
+     */
+    public abstract boolean onUnequip(Player player, boolean dropped);
 
     /**
      * YOU MUST USE THIS METHOD AFTER YOU ARE DONE CREATING YOUR ITEM!!!!!!

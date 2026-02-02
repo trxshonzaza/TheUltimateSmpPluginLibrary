@@ -11,6 +11,7 @@ import java.util.Map;
 
 /**
  * Config manager for SQL and Disk saves, Messenger prefix and custom values.
+ * this entire class is mostly self explanatory...
  */
 public class ConfigManager {
 
@@ -82,6 +83,10 @@ public class ConfigManager {
         return config.getBoolean("texture_pack.enabled", false);
     }
 
+    /**
+     * gets all enabled texture packs to enforce
+     * @return
+     */
     public Map<String, String> getEnabledTexturePacks() {
         Map<String, String> enabledPacks = new HashMap<>();
         ConfigurationSection section = config.getConfigurationSection("texture_pack.packs");
@@ -115,6 +120,13 @@ public class ConfigManager {
 
     // ==== CUSTOM VALUES IN CONFIG ====
 
+    /**
+     * gets custom values that are specified in the config
+     * @param path
+     * @param clazz class type of value
+     * @return object of type provided
+     * @param <T> object type
+     */
     public <T> T getValue(String path, Class<T> clazz) {
         Object obj = config.get(path);
 

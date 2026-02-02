@@ -2,6 +2,7 @@ trxsh.ontop.theUltimateSMPLib
 trxsh.ontop.theUltimateSMPLib.command
 trxsh.ontop.theUltimateSMPLib.config
 trxsh.ontop.theUltimateSMPLib.data
+trxsh.ontop.theUltimateSMPLib.display
 trxsh.ontop.theUltimateSMPLib.enchant
 trxsh.ontop.theUltimateSMPLib.event
 trxsh.ontop.theUltimateSMPLib.event.custom
@@ -12,6 +13,7 @@ trxsh.ontop.theUltimateSMPLib.gui
 trxsh.ontop.theUltimateSMPLib.gui.callback
 trxsh.ontop.theUltimateSMPLib.item
 trxsh.ontop.theUltimateSMPLib.item.action
+trxsh.ontop.theUltimateSMPLib.item.lore
 trxsh.ontop.theUltimateSMPLib.manager
 trxsh.ontop.theUltimateSMPLib.other
 trxsh.ontop.theUltimateSMPLib.recipe

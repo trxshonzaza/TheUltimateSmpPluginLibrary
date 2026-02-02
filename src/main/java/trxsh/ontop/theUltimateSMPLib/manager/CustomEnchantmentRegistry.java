@@ -88,7 +88,7 @@ public class CustomEnchantmentRegistry {
     /**
      * returns true if the item stack has any custom enchantments.
      * @param s
-     * @return
+     * @return whether there is a custom enchantment or not (no bound)
      */
     public static boolean hasCustomEnchantment(ItemStack s) {
         return getCustomEnchantment(s, CustomEnchantment.class) != null;
@@ -98,7 +98,7 @@ public class CustomEnchantmentRegistry {
      * returns true if the item stack has the specific custom enchantment based on type.
      * @param s
      * @param type
-     * @return
+     * @return whether the item stack has a specific custom enchantment
      * @param <T>
      */
     public static <T extends CustomEnchantment> boolean hasCustomEnchantment(ItemStack s, Class<T> type) {

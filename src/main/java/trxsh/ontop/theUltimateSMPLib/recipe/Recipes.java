@@ -31,10 +31,12 @@ public class Recipes {
      * @param result
      * @param shapeMap
      * @param shape
-     * @return
+     * @return the shaped recipe
      */
     public static ShapedRecipe createRecipe(NamespacedKey key, ItemStack result, List<Pair<Character, Object>> shapeMap, String... shape) {
-        if(recipeKeys.contains(key)) throw new IllegalCallerException("Tried to make a recipe with the same key");
+        if(recipeKeys.contains(key)) throw new IllegalCallerException("tried to make a recipe with the same key");
+
+        if(shape.length > 3) throw new IllegalArgumentException("tried to make a recipe with a shape length higher than 3");
 
         ShapedRecipe recipe = new ShapedRecipe(key, result);
         recipe.shape(shape);
@@ -70,7 +72,7 @@ public class Recipes {
      * @param result
      * @param shapeMap
      * @param shape
-     * @return
+     * @return the shaped recipe
      */
     public static ShapedRecipe createThenAddRecipe(NamespacedKey key, ItemStack result, List<Pair<Character, Object>> shapeMap, String... shape) {
         if(recipeKeys.contains(key)) throw new IllegalCallerException("Tried to make a recipe with the same key");
