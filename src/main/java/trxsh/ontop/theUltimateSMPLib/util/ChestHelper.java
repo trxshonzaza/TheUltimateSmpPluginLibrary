@@ -1,22 +1,29 @@
 package trxsh.ontop.theUltimateSMPLib.util;
 
+import com.destroystokyo.paper.loottable.LootableBlockInventory;
+import com.destroystokyo.paper.loottable.LootableEntityInventory;
+import com.destroystokyo.paper.loottable.LootableInventory;
 import org.apache.commons.lang3.tuple.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.generator.structure.Structure;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.LootContext;
 import org.bukkit.loot.LootTable;
+import org.bukkit.loot.Lootable;
 import org.bukkit.util.StructureSearchResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,36 +49,29 @@ public class ChestHelper implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onOpenInventory(InventoryOpenEvent event) {
-        if(event.getInventory().getHolder() instanceof BlockInventoryHolder blockHolder) {
-            Block block = blockHolder.getBlock();
+    public void onOpenInventory(LootGenerateEvent event) {
+        Inventory inventory = Objects.requireNonNull(event.getInventoryHolder()).getInventory();
+        Entity e = event.getEntity();
 
-            if(block instanceof Chest chest) {
-                Inventory chestInventory = chest.getInventory();
-                LootTable table = chest.getLootTable();
+        items.forEach(pair -> {
+            Structure structure = pair.getLeft();
+            ItemStack item = pair.getRight().getLeft();
+            double chance = pair.getRight().getRight();
 
-                if(table != null) {
-                    items.forEach(pair -> {
-                        Structure structure = pair.getLeft();
-                        ItemStack item = pair.getRight().getLeft();
-                        double chance = pair.getRight().getRight();
+            assert e != null;
+            StructureSearchResult result = e.getWorld().locateNearestStructure(e.getLocation(), structure, 3, false);
 
-                        StructureSearchResult result = block.getWorld().locateNearestStructure(block.getLocation(), structure, 2, false);
+            if(result != null) {
+                if (result.getStructure().equals(structure)) {
+                    Bukkit.getLogger().info("structure " + structure + "found for loot table! " + e.getLocation());
 
-                        if(result != null) {
-                            if (result.getStructure().equals(structure)) {
-                                Bukkit.getLogger().info("structure " + structure + "found for chest " + block.getLocation());
-
-                                if(new Random().nextDouble(1, chance) < (10 - chance)) {
-                                    int slot = randomFreeSlot(chestInventory, null);
-                                    chestInventory.setItem(slot, item);
-                                }
-                            }
-                        }
-                    });
+                    if(new Random().nextDouble(0, chance) <= chance) {
+                        int slot = randomFreeSlot(inventory, null);
+                        inventory.setItem(slot, item);
+                    }
                 }
             }
-        }
+        });
     }
 
     /**
@@ -81,7 +81,7 @@ public class ChestHelper implements Listener {
      * @return a random free slot in the inventory;
      */
     public static int randomFreeSlot(@NotNull Inventory inventory, @Nullable Random random) {
-        if(inventory.getContents().length >= inventory.getSize() - 1) throw new IllegalArgumentException("inventory is full");
+        if(inventory.firstEmpty() == -1) throw new IllegalArgumentException("inventory is full");
 
         Random rand = null;
 
