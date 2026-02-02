@@ -4,21 +4,37 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.*;
 import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.Plugin;
 import org.reflections.Reflections;
 import trxsh.ontop.theUltimateSMPLib.Main;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Handles simple events.
  */
 public class SimpleEventHandler implements Listener {
+
+    static Map<String, String> disallowedEvents = new HashMap<>();
+    static {
+        disallowedEvents.put("PlayerLoginEvent", "deprecated. use PlayerConnectionValidateLoginEvent or PlayerServerFullCheckEvent");
+        disallowedEvents.put("PlayerPreLoginEvent", "deprecated");
+        disallowedEvents.put("PlayerChatTabCompleteEvent", "deprecated");
+        disallowedEvents.put("PlayerBucketFishEvent", "use PlayerBucketEntityEvent");
+        disallowedEvents.put("PlayerChatEvent", "forces main thread blocking. use AsyncChatEvent");
+        disallowedEvents.put("AsyncPlayerChatEvent", "deprecated. use AsyncChatEvent");
+        disallowedEvents.put("PlayerPickupItemEvent", "deprecated. use EntityPickupItemEvent");
+        disallowedEvents.put("PlayerRecipeBookClickEvent", "deprecated for removal");
+        disallowedEvents.put("PlayerSpawnChangeEvent", "deprecated for removal, use PlayerSetSpawnEvent");
+        disallowedEvents.put("PlayerSignOpenEvent", "deprecated for removal, use PlayerOpenSignEvent");
+        disallowedEvents.put("EntityKnockbackByEntityEvent", "deprecated for removal, use paper equivalent");
+        disallowedEvents.put("EntityKnockbackEvent", "deprecated for removal, use paper equivalent");
+        disallowedEvents.put("PrepareInventoryResultEvent", "deprecated");
+    }
+
     @EventHandler
     public void onEvent(Event event) {
         for(Map.Entry<Class<? extends Event>, EventAction<? extends Event>> events : SimpleEvent.eventSet()) {
@@ -58,10 +74,14 @@ public class SimpleEventHandler implements Listener {
         };
 
         allEvents.forEach(clazz -> {
-            plugin.getServer().getPluginManager()
-                    .registerEvent(clazz, this, EventPriority.NORMAL, eventExecutor, Main.getInstance());
+            if(!disallowedEvents.containsKey(clazz.getSimpleName())) {
+                plugin.getServer().getPluginManager()
+                        .registerEvent(clazz, this, EventPriority.NORMAL, eventExecutor, Main.getInstance());
 
-            System.out.println("registering simple event: " + clazz.getName());
+                System.out.println("registering simple event: " + clazz.getName());
+            } else {
+                System.err.println("skipping disallowed event " + clazz.getName() + ", " + disallowedEvents.get(clazz.getSimpleName()));
+            }
         });
 
         Main.initalizedSimpleEvent = true;

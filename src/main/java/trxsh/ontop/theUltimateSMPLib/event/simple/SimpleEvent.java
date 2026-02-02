@@ -26,6 +26,9 @@ public class SimpleEvent {
      * @param <T>
      */
     public static <T extends Event> void registerEvent(Class<T> eventClass, EventAction<T> action) {
+        if(SimpleEventHandler.disallowedEvents.containsKey(eventClass.getSimpleName()))
+            throw new IllegalArgumentException("this event is disallowed. please manually register instead. reason: " + SimpleEventHandler.disallowedEvents.get(eventClass.getSimpleName()));
+
         events.put(eventClass, action);
     }
 
