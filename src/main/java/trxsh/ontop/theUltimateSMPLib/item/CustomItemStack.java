@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import trxsh.ontop.theUltimateSMPLib.Main;
+import trxsh.ontop.theUltimateSMPLib.data.GenericDataHolder;
 import trxsh.ontop.theUltimateSMPLib.item.action.PlayerAction;
 
 import java.util.HashMap;
@@ -20,11 +21,13 @@ public abstract class CustomItemStack {
     private int model = -1;
     private String itemKey;
     private final ItemStack itemInstance;
+    private GenericDataHolder extraData;
     private Map<String, PlayerAction> actions = new HashMap<>();
 
     public CustomItemStack(String itemKey) {
         this.itemKey = itemKey;
         this.itemInstance = createItem();
+        this.extraData = new GenericDataHolder();
 
         ItemMeta meta = createItem().getItemMeta();
         if (meta == null || !meta.getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "custom_item_key"))) {

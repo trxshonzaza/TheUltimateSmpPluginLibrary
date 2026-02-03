@@ -70,12 +70,7 @@ public class LoreBuilder {
      */
     public LoreBuilder section(Component header, Component... info) {
         add(header);
-        space(false);
-
-        for(Component c : info) {
-            add(c);
-            space(false);
-        }
+        for(Component c : info) add(c);
 
         return this;
     }
@@ -86,7 +81,12 @@ public class LoreBuilder {
      * @return the lore builder
      */
     public LoreBuilder space(boolean doubleSpace) {
-        return doubleSpace ? add(Component.text("\n\n")) : add(Component.text("\n"));
+        if(doubleSpace) {
+            add(Component.text(" "));
+            add(Component.text(" "));
+        } else add(Component.text(" "));
+
+        return this;
     }
 
     /**

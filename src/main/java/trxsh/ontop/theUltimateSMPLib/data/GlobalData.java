@@ -19,57 +19,12 @@ import java.util.Map;
 /**
  * Global Data container. Saves all data in the map to either SQL or disk.
  */
-public class GlobalData {
-
-    private Map<String, Object> dataList = new HashMap<>();
+public class GlobalData extends DataHolder {
     private static GlobalData instance = null;
 
     public GlobalData() {
+        super();
         instance = this;
-    }
-
-    public void add(String key, Object data) {
-        dataList.put(key, data);
-    }
-
-    public void addOrReplace(String key, Object data) {
-        if(hasKey(key)) {
-            dataList.replace(key, data);
-        } else {
-            add(key, data);
-        }
-    }
-
-    public void addIfNotExists(String key, Object data) {
-        if(!hasKey(key)) {
-            add(key, data);
-        }
-    }
-
-    public <T> T get(String itemKey, Class<T> clazz) {
-        Object obj = dataList.get(itemKey);
-
-        if (clazz.isInstance(obj)) {
-            return clazz.cast(obj);
-        }
-
-        return null;
-    }
-
-    public void remove(String itemKey) {
-        dataList.remove(itemKey);
-    }
-
-    public boolean hasKey(String key) {
-        return dataList.containsKey(key);
-    }
-
-    public void setDataList(Map<String, Object> data) {
-        this.dataList = data;
-    }
-
-    public Map<String, Object> getDataList() {
-        return dataList;
     }
 
     public static GlobalData getInstance() {

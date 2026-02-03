@@ -22,7 +22,7 @@ import java.util.UUID;
  */
 public class ItemHelper {
     /**
-     * creates item.
+     * creates an item.
      * @param material
      * @param name
      * @param lore
@@ -39,6 +39,11 @@ public class ItemHelper {
         return stack;
     }
 
+    /**
+     * recovers a ban entry from a suitable item stack. See: createItemStackFromBanEntry(BanEntry entry)
+     * @param stack the stack to get the suitable ban entry from
+     * @return
+     */
     public static BanEntry<?> getBanEntryFromStack(ItemStack stack) {
         ItemMeta meta = stack.getItemMeta();
         NamespacedKey banKey = new NamespacedKey(Main.getInstance(), "ban_uuid");
@@ -50,6 +55,11 @@ public class ItemHelper {
         return Bukkit.getBanList(BanListType.PROFILE).getBanEntry(player.getPlayerProfile());
     }
 
+    /**
+     * creates a custom item from a ban entry. useful for unban GUI's
+     * @param entry the ban entry to use
+     * @return
+     */
     public static ItemStack createItemStackFromBanEntry(BanEntry<PlayerProfile> entry) {
         if(entry == null)
             return null;

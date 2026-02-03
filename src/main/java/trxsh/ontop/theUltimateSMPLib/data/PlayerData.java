@@ -17,16 +17,16 @@ import java.util.*;
 /**
  * Player Data container. Saves all data in the map per unique player to either SQL or disk.
  */
-public class PlayerData {
-    private Map<String, Object> persistentData = new HashMap<>();
+public class PlayerData extends DataHolder {
     private UUID uuid;
 
     private PlayerData(UUID uuid) {
+        super();
         this.uuid = uuid;
     }
 
     public PlayerData() {
-
+        super();
     }
 
     /*
@@ -44,56 +44,6 @@ public class PlayerData {
         return getOfflinePlayer().getPlayer();
     }
 
-    public <T> T get(String itemKey, Class<T> clazz) {
-        Object obj = persistentData.get(itemKey);
-
-        if (clazz.isInstance(obj)) {
-            return clazz.cast(obj);
-        }
-
-        return null;
-    }
-
-    public void remove(String itemKey) {
-        persistentData.remove(itemKey);
-    }
-
-    @SuppressWarnings("unchecked")
-    public <T> List<T> getOrCreateList(String key, Class<T> type) {
-        List<?> raw = (List<?>) persistentData.get(key);
-        if (raw != null && !raw.isEmpty() && !type.isInstance(raw.get(0))) {
-            throw new IllegalStateException("Invalid type in list for key: " + key);
-        }
-
-        if (raw != null) return (List<T>) raw;
-
-        List<T> list = new ArrayList<>();
-        persistentData.put(key, list);
-        return list;
-    }
-
-    public void add(String key, Object data) {
-        persistentData.put(key, data);
-    }
-
-    public void addOrReplace(String key, Object data) {
-        if(hasKey(key)) {
-            persistentData.replace(key, data);
-        } else {
-            add(key, data);
-        }
-    }
-
-    public void addIfNotExists(String key, Object data) {
-        if(!hasKey(key)) {
-            add(key, data);
-        }
-    }
-
-    public boolean hasKey(String key) {
-        return persistentData.containsKey(key);
-    }
-
     // getter/setters for yaml
     public UUID getUuid() {
         return uuid;
@@ -101,14 +51,6 @@ public class PlayerData {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
-    }
-
-    public Map<String, Object> getPersistentData() {
-        return persistentData;
-    }
-
-    public void setPersistentData(Map<String, Object> persistentData) {
-        this.persistentData = persistentData;
     }
 
     public void saveToSql() {

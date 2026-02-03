@@ -19,7 +19,7 @@ public class Recipes {
 
     /**
      * Create a recipe. does not add it to bukkit recipes.
-     * Recipe object must be Material, ItemStack, RecipeChoice.ExactCohice, or RecipeChoice.MaterialChoice
+     * Recipe object must be Material, ItemStack, RecipeChoice.ExactChoice, or RecipeChoice.MaterialChoice
      * {@snippet :
      * createRecipe(new NamespacedKey("a_key"), resultStack, List.of(
      *                 Pair.of('A', recipeObject1),

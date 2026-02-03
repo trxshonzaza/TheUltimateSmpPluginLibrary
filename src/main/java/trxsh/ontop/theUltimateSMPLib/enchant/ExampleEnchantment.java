@@ -5,6 +5,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+/**
+ * @deprecated this is only a generic example enchantment class. it should not be used. This may be removed in future versions
+ */
+@Deprecated
 public class ExampleEnchantment extends CustomEnchantment {
     public ExampleEnchantment(String displayName, String enchantKey, int maxLevel, int defaultLevel) {
         super(displayName, enchantKey, maxLevel, defaultLevel);
