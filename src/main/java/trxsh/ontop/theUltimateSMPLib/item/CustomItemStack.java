@@ -21,13 +21,13 @@ public abstract class CustomItemStack {
     private int model = -1;
     private String itemKey;
     private final ItemStack itemInstance;
-    private GenericDataHolder extraData;
+    private GenericDataHolder data;
     private Map<String, PlayerAction> actions = new HashMap<>();
 
     public CustomItemStack(String itemKey) {
         this.itemKey = itemKey;
         this.itemInstance = createItem();
-        this.extraData = new GenericDataHolder();
+        this.data = new GenericDataHolder();
 
         ItemMeta meta = createItem().getItemMeta();
         if (meta == null || !meta.getPersistentDataContainer().has(new NamespacedKey(Main.getInstance(), "custom_item_key"))) {
@@ -45,7 +45,7 @@ public abstract class CustomItemStack {
     /**
      * calls when the custom item is either switched or dropped.
      * @param player
-     * @param dropped
+     * @param dropped wether the item was switched or dropped
      * @return true to cancel the event.
      */
     public abstract boolean onUnequip(Player player, boolean dropped);
@@ -92,7 +92,7 @@ public abstract class CustomItemStack {
         if (action != null) {
             action.run(player);
         } else {
-            throw new RuntimeException("Action defined is null");
+            throw new RuntimeException("Action defined is null: " + key);
         }
     }
 
@@ -108,8 +108,16 @@ public abstract class CustomItemStack {
         return model;
     }
 
+    /**
+     * returns the instance of the custom item stack (based on createItem())
+     * @return the instance of the item stack
+     */
     public ItemStack getItemInstance() {
         return itemInstance;
+    }
+
+    public GenericDataHolder getDataHolder() {
+        return data;
     }
 
     public void setModel(int model) {
