@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * helper for GUI. that's it
+ * helper for GUI. that's it. 
+ * this class typically should not be used unless removing a GUI.
  */
 public class GuiChecker implements Listener {
     private static final List<Gui> guis = new ArrayList<>();

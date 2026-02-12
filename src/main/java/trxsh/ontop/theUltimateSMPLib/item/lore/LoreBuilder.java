@@ -8,7 +8,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Simple lore builder for custom items. The methods are recursive, allowing single line lore building
+ * Simple lore builder for custom items. 
+ * The methods are recursive, allowing single line lore building.
  * See: CustomItemStack.java
  */
 public class LoreBuilder {
@@ -90,7 +91,7 @@ public class LoreBuilder {
     }
 
     /**
-     * returns all components as a final list to pass to a ItemMeta for lore
+     * returns the item meta with the built lore (calls lore before returning)
      * @return the item meta containing the built lore
      */
     public ItemMeta finish() {

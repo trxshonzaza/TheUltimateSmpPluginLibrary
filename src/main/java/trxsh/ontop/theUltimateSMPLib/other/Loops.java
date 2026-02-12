@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  */
 public class Loops {
     private static final Map<String, BukkitRunnable> loops = new HashMap<>();
-
+    
     public static void addLoop(String key, BukkitRunnable task, int delay, boolean async) {
         if (async) {
             task.runTaskTimerAsynchronously(Main.getInstance(), 10, delay);

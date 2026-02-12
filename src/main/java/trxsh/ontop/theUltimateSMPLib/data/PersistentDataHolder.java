@@ -11,10 +11,10 @@ import java.util.UUID;
  * each instance is added to a list corresponding to its UUID in order to retrieve the respective data holder instance.
  */
 public class PersistentDataHolder extends DataHolder {
-    private UUID holderId;
-    private static final Map<UUID, PersistentDataHolder> dataHolders = new HashMap<>();
+    private String holderKey;
+    private static final Map<String, PersistentDataHolder> dataHolders = new HashMap<>();
 
-    public static PersistentDataHolder get(UUID key) {
+    public static PersistentDataHolder get(String key) {
         return dataHolders.get(key);
     }
 
@@ -22,7 +22,7 @@ public class PersistentDataHolder extends DataHolder {
      * creates a persistent data holder
      * @param id the id to assign to the data holder
      */
-    public PersistentDataHolder(UUID id) {
+    public PersistentDataHolder(String id) {
         super();
         this.holderId = id;
 
@@ -34,12 +34,12 @@ public class PersistentDataHolder extends DataHolder {
      */
     public void removeInstance() {
         dataList.clear();
-        dataHolders.remove(getHolderId());
+        dataHolders.remove(getHolderKey());
 
         holderId = null;
     }
 
-    public UUID getHolderId() {
+    public String getHolderKey() {
         return holderId;
     }
 }

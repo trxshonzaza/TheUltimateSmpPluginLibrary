@@ -40,7 +40,8 @@ public class ItemHelper {
     }
 
     /**
-     * recovers a ban entry from a suitable item stack. See: createItemStackFromBanEntry(BanEntry entry)
+     * recovers a ban entry from a suitable item stack.
+     * See: createItemStackFromBanEntry(BanEntry entry)
      * @param stack the stack to get the suitable ban entry from
      * @return
      */

@@ -23,7 +23,11 @@ public class RomanNumeral {
         map.put(4, "IV");
         map.put(1, "I");
     }
-
+    /**
+     * converts a integer to a roman numeral.
+     * @param n the integer to convert into a roman numeral
+     * @return the roman numeral as a string
+     */
     public static String toRoman(int n) {
         int l = map.floorKey(n);
 

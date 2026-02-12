@@ -18,7 +18,8 @@ public class CustomEvent {
 
 
     /**
-     * creates a new CustomEvent assigned to eventId. you typically shouldnt instantiate this
+     * creates a new CustomEvent assigned to eventId. 
+     * you typically shouldnt instantiate this.
      * See: CustomEventHandler.java
      * @param eventId
      */

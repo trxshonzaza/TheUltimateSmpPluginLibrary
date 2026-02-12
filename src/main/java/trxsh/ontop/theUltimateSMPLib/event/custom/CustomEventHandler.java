@@ -17,7 +17,7 @@ public class CustomEventHandler {
     private static final List<EventRunnable> registeredListeners = Collections.synchronizedList(new ArrayList<>());
 
     /**
-     * fires custom event. source and args can be null
+     * fires a custom event based on event id. source and args can be null
      * @param eventId
      * @param source
      * @param arguments
